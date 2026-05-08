@@ -57,4 +57,43 @@ function custom_product_carousel_script() {
     </script>
     <?php
 }
+/* * TÙY BIẾN TEDDY SHOP: CHỈ HIỆN VÒNG QUAY KHI GIỎ HÀNG >= 300K (VŨ KHÍ HẠT NHÂN) */
+add_action('wp_footer', 'teddy_nuker_lucky_wheel', 9999);
+function teddy_nuker_lucky_wheel() {
+    if ( class_exists( 'WooCommerce' ) && !is_admin() ) {
+        $cart_total = 0;
+        // Lấy tổng tiền giỏ hàng an toàn
+        if ( is_object( WC()->cart ) ) {
+            $cart_total = WC()->cart->get_subtotal();
+        }
+        
+        // Nếu nhỏ hơn 300k -> Dùng cả CSS và JS để diệt
+        if ( $cart_total < 300000 ) {
+            // Lớp khiên 1: CSS ẩn triệt để mọi tên class của plugin này
+            echo '<style>
+                .woocommerce-lucky-wheel-popup-wrapper, 
+                .wlwl_wheel_icon, 
+                .wlwl-overlay, 
+                .vl-lucky-wheel-popup { 
+                    display: none !important; 
+                    opacity: 0 !important; 
+                    z-index: -99999 !important; 
+                    pointer-events: none !important;
+                }
+            </style>';
+            
+            // Lớp khiên 2: JavaScript tìm và xóa sạch các thẻ HTML của vòng quay
+            echo '<script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    setTimeout(function() {
+                        var wheelElements = document.querySelectorAll(".woocommerce-lucky-wheel-popup-wrapper, .wlwl_wheel_icon, .wlwl-overlay");
+                        wheelElements.forEach(function(el) {
+                            el.remove(); // Xóa sổ hoàn toàn
+                        });
+                    }, 500); // Đợi nửa giây cho nó nạp xong rồi chém
+                });
+            </script>';
+        }
+    }
+}
 ?>
