@@ -459,7 +459,7 @@ class VI_WOO_LUCKY_WHEEL_Frontend_Frontend {
                         }
                         if ( 'on' === $this->settings->get_params( 'wheel_wrap', 'close_option' ) ) {
                             ?>
-                            <div class="wlwl-show-again-option">
+                            <!-- <div class="wlwl-show-again-option">
                                 <div class="wlwl-never-again">
                                     <span><?php esc_html_e( "Never", 'woo-lucky-wheel' ); ?></span>
                                 </div>
@@ -469,7 +469,7 @@ class VI_WOO_LUCKY_WHEEL_Frontend_Frontend {
                                 <div class="wlwl-close">
                                     <span><?php esc_html_e( "No thanks", 'woo-lucky-wheel' ); ?></span>
                                 </div>
-                            </div>
+                            </div> -->
                             <?php
                         }
 
