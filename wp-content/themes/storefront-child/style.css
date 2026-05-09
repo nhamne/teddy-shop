@@ -48,10 +48,7 @@ input[type="submit"]:hover,
   padding-top: 20px !important;
 }
 
-/* Đồng bộ màu nền ngoài cùng của toàn bộ trang web */
-body {
-  background-color: #e7f8ff !important;
-}
+/* (Màu nền body đã khai báo ở trên cùng — xóa bản trùng này) */
 
 /* Căn chỉnh lại khoảng cách của footer nếu cần thiết */
 .site-footer .col-full {
@@ -74,32 +71,11 @@ body {
   padding-top: 0 !important;
 }
 
-/* 3. Tạo dải màu xanh dương cho thanh Menu */
-.storefront-primary-navigation {
-  background-color: #80a8d6 !important; /* Màu xanh dương giống ảnh mẫu */
-  width: 100% !important;
-  margin-top: 15px !important;
-}
+/* 3. Màu nền menu — gộp vào block sticky bên dưới */
 
-/* 4. Căn giữa các mục trong Menu và đổi sang chữ màu trắng */
-.main-navigation ul.menu,
-.main-navigation ul.nav-menu {
-  display: flex !important;
-  justify-content: center !important;
-  flex-wrap: wrap;
-  margin: 0 !important;
-}
+/* 4. Căn giữa menu — gộp vào block nowrap bên dưới */
 
-/* 5. Chỉnh font chữ, khoảng cách và in hoa */
-.main-navigation ul.menu > li > a,
-.main-navigation ul.nav-menu > li > a {
-  color: #ffffff !important; /* Chữ màu trắng */
-  font-weight: bold !important;
-  text-transform: uppercase !important; /* Tự động viết hoa */
-  padding: 15px 25px !important;
-  margin-top: 10px !important;
-  margin-bottom: 10px !important;
-}
+/* 5. Font menu — gộp vào block font-size bên dưới */
 
 /* 6. Hiệu ứng khi trỏ chuột vào Menu (Sáng màu hơn) */
 .main-navigation ul.menu > li > a:hover,
@@ -127,12 +103,36 @@ body {
 .site-header-cart .cart-contents .count {
   display: none !important;
 } */
-/* --- 2. THANH MENU 1 HÀNG VÀ CỐ ĐỊNH (STICKY) --- */
-/* Đóng băng thanh menu ở sát mép trên cùng của trình duyệt khi cuộn chuột */
+/* --- 2. THANH MENU - MÀU NỀN + Z-INDEX --- */
 .storefront-primary-navigation {
-  position: sticky !important;
-  top: 0 !important;
+  background-color: #80a8d6 !important;
+  width: 100% !important;
+  margin-top: 15px !important;
   z-index: 9999 !important;
+  transition: box-shadow 0.3s ease !important;
+}
+
+/* Khi JS thêm class .is-sticky: dính cứng lên đầu viewport */
+.storefront-primary-navigation.is-sticky {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  margin-top: 0 !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Dịch xuống 32px khi có Admin Bar (desktop) */
+.admin-bar .storefront-primary-navigation.is-sticky {
+  top: 32px !important;
+}
+
+/* Admin Bar thu nhỏ trên mobile (max-width 782px) */
+@media screen and (max-width: 782px) {
+  .admin-bar .storefront-primary-navigation.is-sticky {
+    top: 46px !important;
+  }
 }
 
 /* Xóa giới hạn chiều rộng mặc định của thẻ col-full trong thanh menu để giỏ hàng không bị đè lên menu */
@@ -150,20 +150,26 @@ body {
   flex-grow: 1; /* Cho menu tự động co giãn chiếm phần không gian trống */
 }
 
-/* Ép các mục menu nằm trên đúng 1 hàng ngang */
+/* Menu 1 hàng ngang + thuộc tính từ 2 block cũ (gộp lại) */
 .main-navigation ul.menu,
 .main-navigation ul.nav-menu {
   display: flex !important;
-  flex-wrap: nowrap !important; /* Lệnh này cấm các mục menu bị rớt xuống dòng */
+  flex-wrap: nowrap !important;
   justify-content: center !important;
-  white-space: nowrap !important; /* Giữ chữ dính liền nhau */
+  white-space: nowrap !important;
+  margin: 0 !important;
 }
 
-/* Giảm khoảng cách và cỡ chữ một chút để không bị chật chỗ */
+/* Font, màu sắc, padding menu (gộp từ 2 block) */
 .main-navigation ul.menu > li > a,
 .main-navigation ul.nav-menu > li > a {
+  color: #ffffff !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
   padding: 15px 15px !important;
   font-size: 16px !important;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
 }
 
 /* --- 3. DÀN HÀNG NGANG CHO TÊN SHOP VÀ Ô TÌM KIẾM --- */
@@ -186,17 +192,191 @@ body {
   width: 350px !important; /* Có thể thay đổi số này để ô tìm kiếm dài hoặc ngắn hơn */
 }
 
+/* --- TÙY CHỈNH GIAO DIỆN Ô TÌM KIẾM (HEADER & SIDEBAR) --- */
+.site-search .widget_product_search form,
+.woocommerce-product-search {
+  display: flex !important;
+  align-items: center !important;
+  background: #ffffff !important;
+  border-radius: 99px !important;
+  padding: 4px !important;
+  padding-left: 25px !important;
+  border: 1px solid #eef2f5 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+}
+
+.widget_search {
+  display: none !important;
+}
+
+.site-search .widget_product_search form:focus-within,
+.woocommerce-product-search:focus-within {
+  border-color: #b6b6ff !important;
+  box-shadow: 0 0 0 3px rgba(182, 203, 255, 0.2) !important;
+}
+
+/* Ô nhập chữ */
+.site-search .widget_product_search form input[type="search"],
+.site-search .widget_product_search form input[type="text"],
+.woocommerce-product-search input[type="search"],
+.woocommerce-product-search input[type="text"] {
+  flex-grow: 1 !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 10px 15px !important;
+  font-size: 15px !important;
+  color: #333 !important;
+  outline: none !important;
+  width: 100% !important;
+  box-shadow: none !important;
+}
+
+/* Nút tìm kiếm */
+.site-search .widget_product_search form button,
+.site-search .widget_product_search form input[type="submit"],
+.woocommerce-product-search button {
+  background-color: #ff69b4 !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  padding: 10px 24px !important;
+  font-weight: bold !important;
+  border: none !important;
+  margin-left: 5px !important;
+  transition: all 0.3s ease !important;
+  min-width: auto !important;
+  width: auto !important;
+}
+
+.site-search .widget_product_search form button:hover,
+.site-search .widget_product_search form input[type="submit"]:hover,
+.woocommerce-product-search button:hover {
+  background-color: #ff1493 !important;
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3) !important;
+}
+
 /* Biến lưới sản phẩm WooCommerce thành Carousel khi dùng Shortcode trong Elementor */
+/* New Carousel Structure */
+.carousel-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.carousel-track-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track-container::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-btn {
+  background-color: #fff;
+  border: 1px solid #eef2f5;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  color: #333;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.carousel-btn:hover:not(:disabled) {
+  background-color: #e7f8ff;
+  color: #ff69b4;
+  border-color: #e7f8ff;
+}
+
+.carousel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.carousel-btn-prev {
+  left: -20px;
+}
+
+.carousel-btn-next {
+  right: -20px;
+}
+
+/* Product list inside carousel */
+.carousel-track-container ul.products {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  width: auto !important; /* JS tính item width cố định, track tự mở rộng */
+  margin: 0 !important;
+  padding: 10px 5px !important;
+  gap: 20px !important;
+  list-style: none !important;
+  transform: translateX(0);
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Easing mượt tự nhiên */
+  will-change: transform;
+}
+
+.carousel-track-container ul.products li.product {
+  float: none !important;
+  clear: none !important;
+  flex: 0 0 calc(25% - 15px) !important;
+  min-width: calc(25% - 15px) !important;
+  max-width: calc(25% - 15px) !important;
+  margin: 0 !important;
+  padding-bottom: 20px !important;
+}
+
+@media (max-width: 1024px) {
+  .carousel-track-container ul.products li.product {
+    flex: 0 0 calc(33.333% - 14px) !important;
+    min-width: calc(33.333% - 14px) !important;
+    max-width: calc(33.333% - 14px) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-track-container ul.products li.product {
+    flex: 0 0 calc(50% - 10px) !important;
+    min-width: calc(50% - 10px) !important;
+    max-width: calc(50% - 10px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-track-container ul.products li.product {
+    flex: 0 0 80% !important;
+    min-width: 80% !important;
+    max-width: 80% !important;
+  }
+}
+
+/* Override old carousel styles for backward compatibility */
 .custom-carousel-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: block;
   width: 100%;
 }
 
 .custom-carousel-track-container {
   overflow-x: auto;
   scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
   /* Ẩn thanh cuộn */
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -211,16 +391,17 @@ body {
   display: flex !important;
   flex-wrap: nowrap !important;
   margin: 0 !important;
-  padding: 10px 5px !important; /* Tránh bị cắt bóng */
+  padding: 10px 5px !important;
   gap: 20px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  overflow: visible !important;
+  /* Khi nằm trong carousel-track-container, JS sẽ điều khiển transform */
 }
 
 /* Xóa pseudo-elements mặc định của WooCommerce để tránh bị tính thành phần tử flex gây thừa khoảng trống */
 .elementor-widget-shortcode ul.products::before,
-.elementor-widget-shortcode ul.products::after {
+.elementor-widget-shortcode ul.products::after,
+ul.products::before,
+ul.products::after {
   display: none !important;
 }
 
@@ -229,10 +410,12 @@ body {
 }
 
 .elementor-widget-shortcode ul.products li.product {
+  float: none !important;
   flex: 0 0 calc(25% - 15px) !important;
   max-width: calc(25% - 15px) !important;
   margin-bottom: 0 !important;
   clear: none !important;
+  scroll-snap-align: start;
 }
 
 @media (max-width: 1024px) {
@@ -302,12 +485,21 @@ body {
   transform: scale(1.06) !important; /* Phóng to 6% */
 }
 
-/* Đồng bộ chiều cao và căn hàng cho toàn bộ card sản phẩm */
-.woocommerce ul.products,
-.elementor-widget-shortcode ul.products {
+/* Đồng bộ chiều cao và căn hàng cho card sản phẩm ngoài carousel */
+.woocommerce ul.products {
   display: flex !important;
   flex-wrap: wrap !important;
   align-items: stretch !important;
+}
+
+.carousel-track-container .woocommerce ul.products {
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+}
+
+.carousel-track-container .woocommerce ul.products li.product {
+  float: none !important;
+  clear: none !important;
 }
 
 .woocommerce ul.products li.product,
@@ -334,7 +526,10 @@ body {
 }
 
 .woocommerce ul.products li.product .woocommerce-loop-product__title,
-.elementor-widget-shortcode ul.products li.product .woocommerce-loop-product__title {
+.elementor-widget-shortcode
+  ul.products
+  li.product
+  .woocommerce-loop-product__title {
   min-height: 3.4em !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
@@ -382,11 +577,13 @@ body {
 /* Hiệu ứng trượt lên một chút khi di chuột vào Thẻ */
 .elementor-widget-shortcode ul.products li.product:hover {
   box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1) !important;
+  transform: none !important; /* Xóa thuộc tính translate Y */
   transition: 0.3s ease !important;
 }
 
 .woocommerce ul.products li.product:hover {
   box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1) !important;
+  transform: none !important; /* Xóa thuộc tính translate Y */
   transition: 0.3s ease !important;
 }
 
@@ -503,4 +700,468 @@ body {
 .site-header-cart .cart-contents {
   display: flex !important;
   gap: 40px !important; /* Tạo khoảng cách giữa icon giỏ hàng và số lượng/giá tiền */
+}
+
+/* ========================================================
+   TÙY CHỈNH GIAO DIỆN BÀI VIẾT TIN TỨC (SINGLE POST)
+======================================================== */
+
+/* Đổi nền toàn bộ trang bài viết sang màu xanh/hồng nhạt */
+.single-post .site-content {
+  background-color: #f0f8ff !important; /* Đang để nền xanh nhạt, bạn có thể đổi mã màu */
+  padding-top: 40px !important;
+}
+
+/* Biến khu vực nội dung bài viết thành một tấm thẻ (Card) trắng tinh, bo góc, nổi bật giữa nền */
+.single-post .site-main {
+  background-color: #ffffff !important;
+  max-width: 900px !important; /* Thu hẹp bề ngang để chữ không bị dàn quá rộng, dễ đọc hơn */
+  margin: 0 auto !important; /* Căn giữa màn hình */
+  padding: 40px 50px !important;
+  border-radius: 20px !important;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08) !important; /* Đổ bóng nhẹ */
+}
+
+/* Căn giữa Tiêu đề bài viết và trang trí màu sắc */
+.single-post .entry-title {
+  text-align: center !important;
+  color: #ff69b4 !important; /* Tiêu đề màu hồng đậm */
+  font-weight: bold !important;
+  margin-bottom: 20px !important;
+  font-size: 32px !important;
+}
+
+/* Trang trí phần meta (Ngày đăng, tác giả...) */
+.single-post .entry-meta {
+  text-align: center !important;
+  border-bottom: 2px dashed #ffb6c1 !important; /* Đường kẻ đứt màu hồng nhạt dưới ngày tháng */
+  padding-bottom: 20px !important;
+  margin-bottom: 30px !important;
+}
+
+/* Chỉnh khoảng cách và định dạng chữ trong bài viết */
+.single-post .entry-content p {
+  font-size: 16px !important;
+  line-height: 1.8 !important;
+  color: #333333 !important;
+  text-align: justify !important;
+}
+
+/* Bo góc cho các bức ảnh chèn trong bài viết */
+.single-post .entry-content img {
+  border-radius: 10px !important;
+  margin: 20px 0 !important;
+}
+
+/* Ẩn Sidebar ở trang chi tiết bài viết */
+body.single-post #secondary {
+  display: none !important;
+}
+
+/* Kéo giãn nội dung chính tràn viền thay vì bị co lại do col-full */
+body.single-post #primary {
+  width: 100% !important;
+  max-width: 100% !important;
+  float: none !important;
+}
+
+/* Định dạng lại khung bài viết cho cân đối */
+body.single-post main#main {
+  max-width: 900px !important;
+  margin: 0 auto !important; /* Căn giữa */
+  padding: 20px !important;
+}
+
+/* Ép khu vực tiêu đề của Essential Addons Post Grid có chiều cao cố định */
+.eael-grid-post .eael-entry-title {
+  min-height: 55px !important; /* Đảm bảo đủ chỗ cho 2 dòng chữ */
+  display: flex !important;
+  align-items: center !important; /* Căn giữa chữ theo chiều dọc */
+}
+
+/* .eael-grid-post-holder và .eael-entry-wrapper — phiên bản đầy đủ hơn ở bên dưới */
+
+/* ========================================================
+   1. PHÁ VỠ KHUNG COL-FULL CỦA STOREFRONT CHO TRANG ELEMENTOR
+======================================================== */
+/* Ép khu vực chứa nội dung mở rộng tối đa */
+.elementor-page .site-content .col-full {
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin: 0 !important;
+}
+
+/* Đảm bảo cột chính không bị giới hạn chiều rộng */
+.elementor-page #primary {
+  width: 100% !important;
+  max-width: 100% !important;
+  float: none !important;
+}
+
+/* ========================================================
+   1b. TRANG DANH MỤC SẢN PHẨM (Category / Archive WooCommerce)
+   — Trả lại layout chuẩn, KHÔNG phá vỡ grid sản phẩm
+======================================================== */
+
+/* Col-full: Đảm bảo độ rộng tiêu chuẩn và khoảng cách 2 bên */
+.woocommerce-page .site-content > .col-full,
+.tax-product_cat .site-content > .col-full,
+.post-type-archive-product .site-content > .col-full {
+  max-width: 1200px !important; /* Mở rộng tối đa 1200px cho rộng rãi */
+  width: 100% !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  box-sizing: border-box !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Khu vực nội dung chính (Danh sách sản phẩm) */
+.woocommerce-page #primary,
+.tax-product_cat #primary,
+.post-type-archive-product #primary {
+  width: 73% !important; /* Cột sản phẩm chiếm 73% */
+  float: none !important;
+  margin: 0 !important;
+}
+
+/* Khu vực Sidebar (Bên phải) */
+.woocommerce-page #secondary,
+.tax-product_cat #secondary,
+.post-type-archive-product #secondary {
+  width: 24% !important; /* Cột Sidebar chiếm 24% */
+  float: none !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .woocommerce-page #primary,
+  .tax-product_cat #primary,
+  .post-type-archive-product #primary,
+  .woocommerce-page #secondary,
+  .tax-product_cat #secondary,
+  .post-type-archive-product #secondary {
+    width: 100% !important; /* Trên mobile cả 2 cột full 100% */
+  }
+  .woocommerce-page #secondary {
+    margin-top: 30px !important;
+  }
+}
+
+/* Trang trí các Widget trong Sidebar thành dạng Card đẹp mắt */
+.widget-area .widget {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border: 1px solid #eef2f5;
+}
+
+.widget-area .widget-title {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #ffb6c1;
+  text-transform: uppercase;
+}
+
+/* ========================================================
+   TÙY CHỈNH BREADCRUMB (Đường dẫn Home > Danh mục)
+======================================================== */
+.storefront-breadcrumb {
+  margin-bottom: 30px !important;
+  padding: 12px 20px !important;
+  background-color: #ffffff !important;
+  border-radius: 99px !important;
+  font-size: 15px !important;
+  color: #666 !important;
+  display: flex !important;
+  align-items: center !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02) !important;
+  border: 1px solid #eef2f5 !important;
+}
+.storefront-breadcrumb a {
+  color: #ff69b4 !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+}
+.storefront-breadcrumb a:hover {
+  text-decoration: underline !important;
+  color: #ff1493 !important;
+}
+
+/* ========================================================
+   TÙY CHỈNH PHÂN TRANG (Pagination) VÀ BỘ LỌC DƯỚI CÙNG
+======================================================== */
+.after-loop-wrapper,
+.storefront-sorting {
+  margin-top: 50px !important; /* Cách bên trên 1 khoảng rộng hơn */
+  padding-top: 30px !important;
+  border-top: 2px dashed #ffb6c1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 15px !important;
+}
+
+.woocommerce-result-count {
+  float: none !important;
+  margin: 0 !important;
+  color: #888 !important;
+  font-size: 15px !important;
+  font-style: italic !important;
+}
+
+.woocommerce-pagination {
+  float: none !important;
+  margin: 0 !important;
+}
+
+.woocommerce-pagination ul.page-numbers {
+  display: flex !important;
+  gap: 10px !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.woocommerce-pagination ul.page-numbers li {
+  border: none !important;
+  display: inline-block !important;
+}
+
+.woocommerce-pagination ul.page-numbers li .page-numbers {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-width: 42px !important;
+  height: 42px !important;
+  padding: 0 15px !important;
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+  color: #333 !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid #eef2f5 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+}
+
+.woocommerce-pagination ul.page-numbers li .page-numbers.current,
+.woocommerce-pagination ul.page-numbers li a.page-numbers:hover {
+  background-color: #ff69b4 !important;
+  color: #fff !important;
+  border-color: #ff69b4 !important;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* Ẩn Default Sorting khỏi CSS trước đó */
+.woocommerce-products-header {
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border: 1px solid #eef2f5;
+  display: flex;
+  justify-content: center; /* Căn giữa Title */
+  align-items: center;
+}
+
+.woocommerce-products-header .woocommerce-products-header__title {
+  margin: 0 !important;
+  color: #ff69b4;
+  font-size: 28px;
+  text-align: center;
+}
+
+/* Giữ nguyên layout 3 cột mặc định của Storefront cho lưới sản phẩm */
+.woocommerce-page ul.products,
+.tax-product_cat ul.products,
+.post-type-archive-product ul.products {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Mỗi sản phẩm chiếm ~1/3 hàng (trừ gap) */
+.woocommerce-page ul.products li.product,
+.tax-product_cat ul.products li.product,
+.post-type-archive-product ul.products li.product {
+  flex: 0 0 calc(33.333% - 14px) !important;
+  max-width: calc(33.333% - 14px) !important;
+  float: none !important;
+  clear: none !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 992px) {
+  .woocommerce-page ul.products li.product,
+  .tax-product_cat ul.products li.product,
+  .post-type-archive-product ul.products li.product {
+    flex: 0 0 calc(50% - 10px) !important;
+    max-width: calc(50% - 10px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .woocommerce-page ul.products li.product,
+  .tax-product_cat ul.products li.product,
+  .post-type-archive-product ul.products li.product {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ========================================================
+   1c. TRANG TIN TỨC / BLOG — Chỉ mở rộng padding, không phá layout
+======================================================== */
+/* Chỉ tác động trang blog thuần (không phải archive WooCommerce) */
+.blog .site-content .col-full {
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  box-sizing: border-box !important;
+}
+
+/* ========================================================
+   1d. CARD STYLE TRANG DANH MỤC SẢN PHẨM
+   — Bo góc, đổ bóng y hệt trang chủ/Elementor
+======================================================== */
+.woocommerce-page ul.products li.product,
+.tax-product_cat ul.products li.product,
+.post-type-archive-product ul.products li.product {
+  background-color: #ffffff !important;
+  border-radius: 0px 0px 15px 15px !important;
+  overflow: hidden !important;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #eef2f5 !important;
+  padding-bottom: 20px !important;
+  transition: all 0.3s ease !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.woocommerce-page ul.products li.product:hover,
+.tax-product_cat ul.products li.product:hover,
+.post-type-archive-product ul.products li.product:hover {
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-3px) !important;
+}
+
+/* Ảnh sản phẩm: vuông tỷ lệ 1:1, không méo */
+.woocommerce-page ul.products li.product a img,
+.tax-product_cat ul.products li.product a img,
+.post-type-archive-product ul.products li.product a img {
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: contain !important;
+  background-color: #ffffff !important;
+  margin-bottom: 12px !important;
+  transition: transform 0.3s ease !important;
+}
+
+.woocommerce-page ul.products li.product:hover a img,
+.tax-product_cat ul.products li.product:hover a img,
+.post-type-archive-product ul.products li.product:hover a img {
+  transform: scale(1.06) !important;
+}
+
+/* Tiêu đề sản phẩm */
+.woocommerce-page ul.products li.product .woocommerce-loop-product__title,
+.tax-product_cat ul.products li.product .woocommerce-loop-product__title,
+.post-type-archive-product
+  ul.products
+  li.product
+  .woocommerce-loop-product__title {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: #333333 !important;
+  padding: 0 10px !important;
+  margin-bottom: 10px !important;
+  min-height: 3.4em !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+/* Giá tiền */
+.woocommerce-page ul.products li.product .price,
+.tax-product_cat ul.products li.product .price,
+.post-type-archive-product ul.products li.product .price {
+  color: #ff69b4 !important;
+  font-size: 17px !important;
+  font-weight: bold !important;
+  border-top: 1px dashed #ffb6c1 !important;
+  margin: 0 15px !important;
+  padding-top: 12px !important;
+}
+
+/* Nút thêm vào giỏ */
+.woocommerce-page ul.products li.product .button,
+.tax-product_cat ul.products li.product .button,
+.post-type-archive-product ul.products li.product .button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 12px auto 0 !important;
+  padding: 10px 22px !important;
+  border-radius: 999px !important;
+  background-color: #ff69b4 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border: none !important;
+}
+
+.woocommerce-page ul.products li.product .button:hover,
+.tax-product_cat ul.products li.product .button:hover,
+.post-type-archive-product ul.products li.product .button:hover {
+  background-color: #ff1493 !important;
+}
+
+/* ========================================================
+   2. TRỊ BỆNH CAO THẤP CHO LƯỚI BÀI VIẾT (POST GRID)
+======================================================== */
+/* Bước 1: Ép TẤT CẢ ảnh bài viết về chung 1 chiều cao, tự động cắt phần thừa mà không bị méo */
+.eael-grid-post-holder .eael-entry-media img {
+  width: 100% !important;
+  height: 300px !important; /* Bạn có thể tăng giảm số này tùy ý */
+  object-fit: cover !important; /* Lệnh thần thánh giúp ảnh tự crop vừa khung */
+}
+
+/* Bước 2: Ép toàn bộ khung bài viết phải giãn đều bằng nhau */
+.eael-post-grid .eael-grid-post {
+  display: flex !important;
+}
+
+.eael-grid-post-holder {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Bước 3: Đẩy khu vực Text giãn ra, ép ngày tháng và nút "Read More" nằm bám sát đáy */
+.eael-grid-post-holder .eael-entry-wrapper {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+/* Ép tiêu đề luôn có độ cao bằng 2 dòng để không bị xô lệch */
+.eael-grid-post-holder .eael-entry-title {
+  min-height: 55px !important;
+  margin-bottom: 10px !important;
 }
