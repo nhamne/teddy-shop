@@ -161,7 +161,10 @@ function nhi_teddy_lucky_wheel_logic() {
     }
 
     $cart_total = (is_object(WC()->cart)) ? WC()->cart->get_subtotal() : 0;
-    if ($cart_total < 500000) return;
+    if ($cart_total < 500000) {
+        echo '<style>.woocommerce-lucky-wheel-popup-wrapper, .wlwl_wheel_icon, .wlwl-overlay { display: none !important; }</style>';
+        return;
+    }
 
     $ajax_url  = admin_url('admin-ajax.php');
     $nonce_val = wp_create_nonce('nhi_lucky_coupon_nonce');
