@@ -805,7 +805,7 @@ body.single-post main#main {
 ======================================================== */
 
 /* Col-full: Đảm bảo độ rộng tiêu chuẩn và khoảng cách 2 bên */
-.woocommerce-page .site-content > .col-full,
+.archive.woocommerce-page .site-content > .col-full,
 .tax-product_cat .site-content > .col-full,
 .post-type-archive-product .site-content > .col-full {
   max-width: 1200px !important; /* Mở rộng tối đa 1200px cho rộng rãi */
@@ -820,7 +820,7 @@ body.single-post main#main {
 }
 
 /* Khu vực nội dung chính (Danh sách sản phẩm) */
-.woocommerce-page #primary,
+.archive.woocommerce-page #primary,
 .tax-product_cat #primary,
 .post-type-archive-product #primary {
   width: 73% !important; /* Cột sản phẩm chiếm 73% */
@@ -829,7 +829,7 @@ body.single-post main#main {
 }
 
 /* Khu vực Sidebar (Bên phải) */
-.woocommerce-page #secondary,
+.archive.woocommerce-page #secondary,
 .tax-product_cat #secondary,
 .post-type-archive-product #secondary {
   width: 24% !important; /* Cột Sidebar chiếm 24% */
@@ -838,15 +838,15 @@ body.single-post main#main {
 }
 
 @media (max-width: 768px) {
-  .woocommerce-page #primary,
+  .archive.woocommerce-page #primary,
   .tax-product_cat #primary,
   .post-type-archive-product #primary,
-  .woocommerce-page #secondary,
+  .archive.woocommerce-page #secondary,
   .tax-product_cat #secondary,
   .post-type-archive-product #secondary {
     width: 100% !important; /* Trên mobile cả 2 cột full 100% */
   }
-  .woocommerce-page #secondary {
+  .archive.woocommerce-page #secondary {
     margin-top: 30px !important;
   }
 }
@@ -1128,6 +1128,47 @@ body.single-post main#main {
 .tax-product_cat ul.products li.product .button:hover,
 .post-type-archive-product ul.products li.product .button:hover {
   background-color: #ff1493 !important;
+}
+
+/* Nút Xem giỏ hàng (hiện ra sau khi click Thêm vào giỏ) */
+.woocommerce ul.products li.product .added_to_cart,
+.elementor-widget-shortcode ul.products li.product .added_to_cart,
+.woocommerce-page ul.products li.product .added_to_cart,
+.tax-product_cat ul.products li.product .added_to_cart,
+.post-type-archive-product ul.products li.product .added_to_cart {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 10px auto 0 !important;
+  padding: 10px 22px !important;
+  border-radius: 999px !important;
+  background-color: #ffffff !important;
+  color: #ff69b4 !important;
+  font-weight: 700 !important;
+  border: 1px solid #ff69b4 !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+  width: max-content !important;
+  white-space: nowrap !important;
+}
+
+.woocommerce ul.products li.product .added_to_cart::after,
+.elementor-widget-shortcode ul.products li.product .added_to_cart::after,
+.woocommerce-page ul.products li.product .added_to_cart::after,
+.tax-product_cat ul.products li.product .added_to_cart::after,
+.post-type-archive-product ul.products li.product .added_to_cart::after {
+  display: none !important;
+}
+
+.woocommerce ul.products li.product .added_to_cart:hover,
+.elementor-widget-shortcode ul.products li.product .added_to_cart:hover,
+.woocommerce-page ul.products li.product .added_to_cart:hover,
+.tax-product_cat ul.products li.product .added_to_cart:hover,
+.post-type-archive-product ul.products li.product .added_to_cart:hover {
+  background-color: #ff69b4 !important;
+  color: #ffffff !important;
 }
 
 /* ========================================================

@@ -608,4 +608,35 @@ function nhi_teddy_lucky_wheel_logic()
     </script>
     <?php
 }
+
+/* ========================================================
+   XÓA SIDEBAR Ở CÁC TRANG (NGOẠI TRỪ TRANG SHOP & CATEGORY)
+======================================================== */
+add_action( 'wp', 'teddy_remove_sidebar_logic', 99 );
+function teddy_remove_sidebar_logic() {
+    // Nếu không phải là trang Cửa hàng, Danh mục sản phẩm, Từ khóa sản phẩm, và Kết quả tìm kiếm
+    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() && ! is_search() ) {
+        // Bỏ sidebar của Storefront
+        remove_action( 'storefront_sidebar', 'storefront_get_sidebar', 10 );
+    }
+}
+
+// Bổ sung class full-width cho các trang đã bị xóa sidebar để giao diện tràn viền
+add_filter( 'body_class', 'teddy_force_full_width_body_class', 99 );
+function teddy_force_full_width_body_class( $classes ) {
+    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() && ! is_search() ) {
+        $classes[] = 'storefront-full-width-content';
+        
+        // Xóa class right-sidebar hoặc left-sidebar nếu có
+        $key_right = array_search( 'right-sidebar', $classes );
+        if ( false !== $key_right ) {
+            unset( $classes[$key_right] );
+        }
+        $key_left = array_search( 'left-sidebar', $classes );
+        if ( false !== $key_left ) {
+            unset( $classes[$key_left] );
+        }
+    }
+    return $classes;
+}
 ?>
