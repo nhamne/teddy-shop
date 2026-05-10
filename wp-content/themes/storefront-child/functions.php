@@ -371,8 +371,10 @@ function nhi_teddy_lucky_wheel_logic()
     }
 
     $cart_total = (is_object(WC()->cart)) ? WC()->cart->get_subtotal() : 0;
-    if ($cart_total < 500000)
+    if ($cart_total < 500000) {
+        echo '<style>.woocommerce-lucky-wheel-popup-wrapper, .wlwl_wheel_icon, .wlwl-overlay { display: none !important; }</style>';
         return;
+    }
 
     $ajax_url = admin_url('admin-ajax.php');
     $nonce_val = wp_create_nonce('nhi_lucky_coupon_nonce');
@@ -612,29 +614,31 @@ function nhi_teddy_lucky_wheel_logic()
 /* ========================================================
    XÓA SIDEBAR Ở CÁC TRANG (NGOẠI TRỪ TRANG SHOP & CATEGORY)
 ======================================================== */
-add_action( 'wp', 'teddy_remove_sidebar_logic', 99 );
-function teddy_remove_sidebar_logic() {
+add_action('wp', 'teddy_remove_sidebar_logic', 99);
+function teddy_remove_sidebar_logic()
+{
     // Nếu không phải là trang Cửa hàng, Danh mục sản phẩm, Từ khóa sản phẩm, và Kết quả tìm kiếm
-    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() && ! is_search() ) {
+    if (!is_shop() && !is_product_category() && !is_product_tag() && !is_search()) {
         // Bỏ sidebar của Storefront
-        remove_action( 'storefront_sidebar', 'storefront_get_sidebar', 10 );
+        remove_action('storefront_sidebar', 'storefront_get_sidebar', 10);
     }
 }
 
 // Bổ sung class full-width cho các trang đã bị xóa sidebar để giao diện tràn viền
-add_filter( 'body_class', 'teddy_force_full_width_body_class', 99 );
-function teddy_force_full_width_body_class( $classes ) {
-    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() && ! is_search() ) {
+add_filter('body_class', 'teddy_force_full_width_body_class', 99);
+function teddy_force_full_width_body_class($classes)
+{
+    if (!is_shop() && !is_product_category() && !is_product_tag() && !is_search()) {
         $classes[] = 'storefront-full-width-content';
-        
+
         // Xóa class right-sidebar hoặc left-sidebar nếu có
-        $key_right = array_search( 'right-sidebar', $classes );
-        if ( false !== $key_right ) {
-            unset( $classes[$key_right] );
+        $key_right = array_search('right-sidebar', $classes);
+        if (false !== $key_right) {
+            unset($classes[$key_right]);
         }
-        $key_left = array_search( 'left-sidebar', $classes );
-        if ( false !== $key_left ) {
-            unset( $classes[$key_left] );
+        $key_left = array_search('left-sidebar', $classes);
+        if (false !== $key_left) {
+            unset($classes[$key_left]);
         }
     }
     return $classes;
