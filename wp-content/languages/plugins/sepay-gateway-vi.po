@@ -1,0 +1,37 @@
+# Translation of Plugins - SePay Gateway - Stable (latest release) in Vietnamese
+# This file is distributed under the same license as the Plugins - SePay Gateway - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-04-21 08:06:34+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: GlotPress/4.0.1\n"
+"Language: vi_VN\n"
+"Project-Id-Version: Plugins - SePay Gateway - Stable (latest release)\n"
+
+#. Author URI of the plugin
+#: sepay-gateway.php
+msgid "https://sepay.vn/"
+msgstr "https://sepay.vn/"
+
+#. Author of the plugin
+#: sepay-gateway.php
+msgid "SePay Team"
+msgstr "SePay Team"
+
+#. Description of the plugin
+#: sepay-gateway.php
+msgid "SePay - Giải pháp tự động xác nhận thanh toán chuyển khoản ngân hàng"
+msgstr "SePay - Giải pháp tự động xác nhận thanh toán chuyển khoản ngân hàng"
+
+#. Plugin URI of the plugin
+#: sepay-gateway.php
+msgid "https://docs.sepay.vn/woocommerce.html"
+msgstr "https://docs.sepay.vn/woocommerce.html"
+
+#. Plugin Name of the plugin
+#: sepay-gateway.php
+msgid "SePay Gateway"
+msgstr "SePay Gateway"

@@ -1,0 +1,2 @@
+<?php
+return ['x-generator'=>'GlotPress/4.0.1','translation-revision-date'=>'2025-04-21 08:06:34+0000','plural-forms'=>'nplurals=1; plural=0;','project-id-version'=>'Plugins - SePay Gateway - Stable (latest release)','language'=>'vi_VN','messages'=>['https://sepay.vn/'=>'https://sepay.vn/','SePay Team'=>'SePay Team','SePay - Giải pháp tự động xác nhận thanh toán chuyển khoản ngân hàng'=>'SePay - Giải pháp tự động xác nhận thanh toán chuyển khoản ngân hàng','https://docs.sepay.vn/woocommerce.html'=>'https://docs.sepay.vn/woocommerce.html','SePay Gateway'=>'SePay Gateway']];
