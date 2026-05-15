@@ -2,4 +2,3 @@ wp-config.php
 node_modules/
 .DS_Store
 *.log
-wp-content/uploads/
