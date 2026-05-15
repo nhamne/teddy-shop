@@ -299,7 +299,7 @@ function teddy_remove_top_sorting_pagination()
     remove_action('woocommerce_before_shop_loop', 'storefront_sorting_wrapper_close', 31);
 }
 
-// Dịch chữ "Showing X of Y results" sang Tiếng Việt
+// Dịch chữ và các chuỗi WooCommerce sang Tiếng Việt
 add_filter('gettext', 'teddy_translate_woocommerce_strings', 10, 3);
 function teddy_translate_woocommerce_strings($translated, $text, $domain)
 {
@@ -313,8 +313,36 @@ function teddy_translate_woocommerce_strings($translated, $text, $domain)
         if (strpos($text, 'Showing %1$d&ndash;%2$d of %3$d results') !== false) {
             return 'Hiển thị %1$d&ndash;%2$d trong %3$d kết quả';
         }
+        // Dịch cho trang Giỏ hàng
+        if ($text === 'Cart') return 'Giỏ hàng';
+        if ($text === 'Product') return 'Sản phẩm';
+        if ($text === 'Price') return 'Giá';
+        if ($text === 'Quantity') return 'Số lượng';
+        if ($text === 'Subtotal') return 'Tạm tính';
+        if ($text === 'Cart totals') return 'Tổng cộng giỏ hàng';
+        if ($text === 'Total') return 'Tổng';
+        if ($text === 'Proceed to checkout') return 'Tiến hành thanh toán';
+        if ($text === 'Apply coupon') return 'Áp dụng';
+        if ($text === 'Coupon code') return 'Nhập mã giảm giá';
+        if ($text === 'Return to shop') return 'Tiếp tục xem sản phẩm';
+        if ($text === 'Free shipping') return 'Phí vận chuyển';
     }
     return $translated;
+}
+
+// Đổi tên trang Cart và Checkout (vì WooCommerce Blocks có thể không dùng chuỗi dịch chuẩn)
+add_filter('the_title', 'teddy_rename_cart_checkout_title', 10, 2);
+function teddy_rename_cart_checkout_title($title, $id = null)
+{
+    if (is_page() && in_the_loop()) {
+        if ($title === 'Cart') {
+            return 'GIỎ HÀNG';
+        }
+        if ($title === 'Checkout') {
+            return 'THANH TOÁN';
+        }
+    }
+    return $title;
 }
 
 /* ============================================================

@@ -83,8 +83,8 @@ input[type="submit"]:hover,
 /* 5. Font menu — gộp vào block font-size bên dưới */
 
 /* 6. Hiệu ứng khi trỏ chuột vào Menu (Sáng màu hơn) */
-.main-navigation ul.menu>li>a:hover,
-.main-navigation ul.nav-menu>li>a:hover {
+.main-navigation ul.menu > li > a:hover,
+.main-navigation ul.nav-menu > li > a:hover {
   background-color: #7599de !important;
   color: #ffffff !important;
   border-radius: 8px;
@@ -113,7 +113,9 @@ input[type="submit"]:hover,
   font-weight: 600 !important;
   padding: 10px 14px !important;
   border-radius: 8px !important;
-  transition: background-color 0.2s ease, color 0.2s ease !important;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease !important;
 }
 
 .main-navigation ul.menu ul.sub-menu li a:hover,
@@ -198,8 +200,8 @@ input[type="submit"]:hover,
 }
 
 /* Font, màu sắc, padding menu (gộp từ 2 block) */
-.main-navigation ul.menu>li>a,
-.main-navigation ul.nav-menu>li>a {
+.main-navigation ul.menu > li > a,
+.main-navigation ul.nav-menu > li > a {
   color: #ffffff !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
@@ -213,7 +215,7 @@ input[type="submit"]:hover,
 /* Điều chỉnh lại khoảng cách trên dưới của phần chứa logo/tên shop */
 
 /* Sử dụng kỹ thuật Flexbox để ép Tên Shop nằm bên trái, Ô tìm kiếm nằm bên phải */
-.site-header>.col-full {
+.site-header > .col-full {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -551,15 +553,15 @@ ul.products::after {
   height: 100% !important;
 }
 
-.woocommerce ul.products li.product>a,
-.elementor-widget-shortcode ul.products li.product>a {
+.woocommerce ul.products li.product > a,
+.elementor-widget-shortcode ul.products li.product > a {
   display: flex !important;
   flex-direction: column !important;
   flex: 1 1 auto !important;
 }
 
-.woocommerce ul.products li.product>a img,
-.elementor-widget-shortcode ul.products li.product>a img {
+.woocommerce ul.products li.product > a img,
+.elementor-widget-shortcode ul.products li.product > a img {
   width: 100% !important;
   aspect-ratio: 1 / 1 !important;
   object-fit: contain !important;
@@ -568,7 +570,10 @@ ul.products::after {
 }
 
 .woocommerce ul.products li.product .woocommerce-loop-product__title,
-.elementor-widget-shortcode ul.products li.product .woocommerce-loop-product__title {
+.elementor-widget-shortcode
+  ul.products
+  li.product
+  .woocommerce-loop-product__title {
   min-height: 3.4em !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
@@ -642,7 +647,10 @@ ul.products::after {
 }
 
 /* 3. Căn giữa Tiêu đề sản phẩm và đổi màu */
-.elementor-widget-shortcode ul.products li.product .woocommerce-loop-product__title {
+.elementor-widget-shortcode
+  ul.products
+  li.product
+  .woocommerce-loop-product__title {
   text-align: center !important;
   font-size: 16px !important;
   font-weight: bold !important;
@@ -860,9 +868,9 @@ body.single-post main#main {
 ======================================================== */
 
 /* Col-full: Đảm bảo độ rộng tiêu chuẩn và khoảng cách 2 bên */
-.archive.woocommerce-page .site-content>.col-full,
-.tax-product_cat .site-content>.col-full,
-.post-type-archive-product .site-content>.col-full {
+.archive.woocommerce-page .site-content > .col-full,
+.tax-product_cat .site-content > .col-full,
+.post-type-archive-product .site-content > .col-full {
   max-width: 1200px !important;
   /* Mở rộng tối đa 1200px cho rộng rãi */
   width: 100% !important;
@@ -896,7 +904,6 @@ body.single-post main#main {
 }
 
 @media (max-width: 768px) {
-
   .archive.woocommerce-page #primary,
   .tax-product_cat #primary,
   .post-type-archive-product #primary,
@@ -1103,7 +1110,6 @@ body.single-post main#main {
 }
 
 @media (max-width: 992px) {
-
   .woocommerce-page ul.products li.product,
   .tax-product_cat ul.products li.product,
   .post-type-archive-product ul.products li.product {
@@ -1113,7 +1119,6 @@ body.single-post main#main {
 }
 
 @media (max-width: 480px) {
-
   .woocommerce-page ul.products li.product,
   .tax-product_cat ul.products li.product,
   .post-type-archive-product ul.products li.product {
@@ -1179,7 +1184,10 @@ body.single-post main#main {
 /* Tiêu đề sản phẩm */
 .woocommerce-page ul.products li.product .woocommerce-loop-product__title,
 .tax-product_cat ul.products li.product .woocommerce-loop-product__title,
-.post-type-archive-product ul.products li.product .woocommerce-loop-product__title {
+.post-type-archive-product
+  ul.products
+  li.product
+  .woocommerce-loop-product__title {
   font-size: 16px !important;
   font-weight: bold !important;
   color: #333333 !important;
@@ -1312,7 +1320,12 @@ body.single-post main#main {
 .main-navigation ul.menu > li.current-menu-ancestor > a,
 .main-navigation ul.menu > li.current-menu-parent > a,
 .main-navigation ul.menu > li.current_page_item > a {
-  background-color: rgba(255, 255, 255, 0.2) !important; /* Đổi màu nền (trắng mờ) */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ) !important; /* Đổi màu nền (trắng mờ) */
   border-radius: 8px !important; /* Bo góc mềm mại */
   color: #ffffff !important; /* Đảm bảo chữ vẫn màu trắng */
 }
@@ -1327,7 +1340,11 @@ body.single-post main#main {
    CUSTOM FOOTER TEDDY SHOP
 ======================================================== */
 .teddy-custom-footer {
-  background: linear-gradient(135deg, #eef7ff 0%, #cce5ff 100%); /* Nền xanh pastel nhạt */
+  background: linear-gradient(
+    135deg,
+    #eef7ff 0%,
+    #cce5ff 100%
+  ); /* Nền xanh pastel nhạt */
   color: #444; /* Màu chữ xám đen để dễ đọc trên nền sáng */
   padding: 60px 0 0;
   margin-top: 60px;
@@ -1352,7 +1369,7 @@ body.single-post main#main {
 }
 
 .teddy-footer-title {
-  color: #4685DA !important; /* Chữ tiêu đề cột màu xanh dương đậm */
+  color: #4685da !important; /* Chữ tiêu đề cột màu xanh dương đậm */
   font-size: 18px !important;
   font-weight: bold !important;
   margin-bottom: 20px !important;
@@ -1376,7 +1393,7 @@ body.single-post main#main {
 }
 
 .teddy-socials a {
-  background: #4685DA; /* Nền xanh */
+  background: #4685da; /* Nền xanh */
   color: #fff !important;
   padding: 8px 15px;
   border-radius: 20px;
@@ -1411,7 +1428,7 @@ body.single-post main#main {
 /* 1. Bo góc tinh tế cho ảnh sản phẩm */
 .woocommerce div.product div.images img {
   border-radius: 12px !important;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
 }
 
 /* 2. Tiêu đề sản phẩm: Gọn gàng, thanh lịch */
@@ -1551,8 +1568,16 @@ body.single-post main#main {
 }
 
 /* Ẩn mũi tên mặc định (Chrome/Safari) */
-.woocommerce div.product form.cart .quantity input.qty::-webkit-outer-spin-button,
-.woocommerce div.product form.cart .quantity input.qty::-webkit-inner-spin-button {
+.woocommerce
+  div.product
+  form.cart
+  .quantity
+  input.qty::-webkit-outer-spin-button,
+.woocommerce
+  div.product
+  form.cart
+  .quantity
+  input.qty::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
   margin: 0 !important;
 }
@@ -1595,7 +1620,11 @@ body.single-post main#main {
    TEM "GIẢM GIÁ!" CHUYÊN NGHIỆP, SANG TRỌNG
 ======================================================== */
 .woocommerce span.onsale {
-  background: linear-gradient(135deg, #ff416c, #ff4b2b) !important; /* Gradient đỏ san hô sang trọng */
+  background: linear-gradient(
+    135deg,
+    #ff416c,
+    #ff4b2b
+  ) !important; /* Gradient đỏ san hô sang trọng */
   color: #ffffff !important;
   border: none !important; /* Gỡ bỏ viền */
   font-weight: bold !important;
@@ -1621,16 +1650,27 @@ body.single-post main#main {
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
   transform: skewX(-25deg);
   animation: shimmer-sale 3s infinite !important;
 }
 
 /* Lướt qua trong 20% thời gian, sau đó nghỉ 80% thời gian */
 @keyframes shimmer-sale {
-  0% { left: -100%; }
-  20% { left: 200%; }
-  100% { left: 200%; }
+  0% {
+    left: -100%;
+  }
+  20% {
+    left: 200%;
+  }
+  100% {
+    left: 200%;
+  }
 }
 
 /* ========================================================
@@ -1649,4 +1689,704 @@ body.single-post main#main {
   aspect-ratio: 1 / 1 !important;
   object-fit: cover !important;
   object-position: center !important;
+}
+/* ================================================================
+   TEDDY SHOP - WOOCOMMERCE CART & CHECKOUT REDESIGN (BEMORI STYLE)
+================================================================ */
+:root {
+  --teddy-white: #ffffff;
+  --teddy-pink-main: #e8528d; /* Màu hồng chủ đạo giống ảnh */
+  --teddy-pink-hover: #d13d78;
+  --teddy-pink-light: #fcd5e8;
+  --teddy-text-color: #333333;
+  --teddy-border-color: #f0f0f0;
+  --teddy-radius-btn: 4px;
+}
+
+/* =======================================
+   A. GIAO DIỆN GIỎ HÀNG CLASSIC (SHORTCODE)
+======================================= */
+
+/* 1. Layout tổng thể (Chia cột trái - phải trên Desktop) */
+@media (min-width: 768px) {
+  .woocommerce-cart .woocommerce {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+  }
+  .woocommerce-cart .woocommerce-cart-form {
+    width: 65% !important;
+    margin-right: 3% !important;
+  }
+  .woocommerce-cart .cart-collaterals {
+    width: 32% !important;
+  }
+}
+
+/* 2. Bảng Giỏ Hàng (Table) */
+.woocommerce table.shop_table {
+  border: none !important;
+  border-collapse: separate !important; /* Dùng separate để tạo khoảng cách giữa các hàng */
+  border-spacing: 0 15px !important; /* Khoảng cách 15px giữa mỗi sản phẩm */
+  border-radius: 0 !important;
+  width: 100% !important;
+  background: transparent !important;
+}
+
+/* Header bảng (SẢN PHẨM, GIÁ, SỐ LƯỢNG, TẠM TÍNH) */
+.woocommerce table.shop_table thead th {
+  background-color: transparent !important;
+  color: var(--teddy-pink-main) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  border: none !important;
+  border-bottom: 2px solid var(--teddy-border-color) !important;
+  padding: 10px !important;
+}
+
+.woocommerce table.shop_table thead th.product-name {
+  text-align: left !important;
+}
+
+/* Khung nền trắng cho từng sản phẩm (Row / Card - Hiệu ứng dập nổi) */
+.woocommerce table.shop_table tbody tr.cart_item {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important; /* Bóng đổ nổi bật hơn (dập nổi) */
+  background-color: var(--teddy-white) !important; /* Nền trắng bọc cả hàng */
+  border-radius: 20px !important; /* Bo góc tròn nhiều hơn */
+}
+
+.woocommerce table.shop_table tbody tr.cart_item td {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 25px 15px !important; /* Rộng rãi hơn */
+  vertical-align: middle !important;
+  text-align: center !important;
+}
+
+/* Bo góc mượt mà cho cạnh trái và cạnh phải của mỗi ô nền trắng */
+.woocommerce table.shop_table tbody tr.cart_item td:first-child {
+  border-top-left-radius: 20px !important;
+  border-bottom-left-radius: 20px !important;
+}
+
+.woocommerce table.shop_table tbody tr.cart_item td:last-child {
+  border-top-right-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+}
+
+/* Bỏ border cũ và căn trái cho tên sản phẩm */
+.woocommerce table.shop_table tbody td.product-name {
+  text-align: left !important;
+}
+
+/* Tên sản phẩm */
+.woocommerce table.shop_table tbody td.product-name a {
+  color: var(--teddy-pink-main) !important;
+  font-weight: normal !important;
+  text-decoration: none !important;
+  font-size: 15px !important;
+}
+
+/* Giá và Tạm tính */
+.woocommerce table.shop_table tbody td.product-price,
+.woocommerce table.shop_table tbody td.product-subtotal {
+  color: #ff3b30 !important; /* Màu đỏ cam cho giá tiền */
+  font-weight: 600 !important;
+}
+
+/* Nút xoá (Dấu X tròn) */
+.woocommerce a.remove {
+  background-color: #d1d1d1 !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 18px !important;
+  font-size: 14px !important;
+  display: inline-block !important;
+  text-align: center !important;
+}
+.woocommerce a.remove:hover {
+  background-color: var(--teddy-pink-main) !important;
+}
+
+/* Cột hình ảnh */
+.woocommerce table.shop_table tbody td.product-thumbnail img {
+  border-radius: 5px !important;
+  width: 70px !important;
+}
+
+/* 3. Ô Số lượng (Quantity) */
+.woocommerce .quantity {
+  display: inline-flex !important;
+  align-items: center !important;
+  border: 1px solid var(--teddy-pink-light) !important;
+  border-radius: 20px !important;
+  padding: 2px 10px !important;
+  background: transparent !important;
+}
+
+.woocommerce .quantity .qty {
+  width: 40px !important;
+  text-align: center !important;
+  border: none !important;
+  background: transparent !important;
+  color: var(--teddy-pink-main) !important;
+  padding: 5px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+/* 4. Khu vực Hành động (Nút Tiếp tục, Mã giảm giá) */
+.woocommerce-cart table.cart td.actions {
+  padding: 20px 0 !important;
+  border-bottom: 1px solid var(--teddy-border-color) !important;
+}
+
+/* Flexbox cho Action row */
+.woocommerce-cart table.cart td.actions .coupon {
+  float: right !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Nút Tiếp tục xem sản phẩm (Bên trái) */
+.woocommerce-cart .actions > .button,
+.woocommerce-cart .actions a.button {
+  background-color: #fff !important;
+  color: var(--teddy-pink-main) !important;
+  border: 1px solid var(--teddy-pink-main) !important;
+  border-radius: 0 !important;
+  padding: 10px 20px !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  float: left !important;
+}
+
+.woocommerce-cart .actions > .button:hover,
+.woocommerce-cart .actions a.button:hover {
+  background-color: var(--teddy-pink-light) !important;
+}
+
+/* Input mã giảm giá */
+.woocommerce-cart .coupon input.input-text {
+  width: 150px !important;
+  margin: 0 !important;
+  border: 1px solid var(--teddy-border-color) !important;
+  border-right: none !important; /* Dính vào nút Áp dụng */
+  border-radius: 0 !important;
+  padding: 10px 15px !important;
+  color: var(--teddy-text-color) !important;
+  height: 42px !important;
+  box-shadow: none !important;
+}
+
+/* Nút Áp dụng (Bên phải) */
+.woocommerce button.button[name="apply_coupon"] {
+  background-color: #fff !important;
+  color: var(--teddy-pink-main) !important;
+  border: 1px solid var(--teddy-pink-main) !important;
+  border-radius: 0 !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  height: 42px !important;
+}
+
+.woocommerce button.button[name="apply_coupon"]:hover {
+  background-color: var(--teddy-pink-light) !important;
+}
+
+/* 5. Cột Tổng Cộng Giỏ Hàng (Cart Totals) */
+.cart_totals {
+  background: transparent !important;
+}
+
+.cart_totals h2 {
+  color: var(--teddy-pink-main) !important;
+  font-size: 16px !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  border-bottom: none !important;
+  margin-bottom: 15px !important;
+  padding: 0 !important;
+}
+
+.cart_totals table.shop_table {
+  border-top: 1px solid var(--teddy-border-color) !important;
+}
+
+.cart_totals table.shop_table th {
+  text-align: left !important;
+  font-weight: 600 !important;
+  color: var(--teddy-pink-main) !important;
+  text-transform: uppercase !important;
+  border-bottom: 1px solid var(--teddy-border-color) !important;
+  padding: 15px 0 !important;
+}
+
+.cart_totals table.shop_table td {
+  text-align: right !important;
+  color: #ff3b30 !important; /* Đỏ cam */
+  border-bottom: 1px solid var(--teddy-border-color) !important;
+  padding: 15px 0 !important;
+}
+
+/* Shipping text */
+.cart_totals table.shop_table td[data-title="Shipment"],
+.cart_totals table.shop_table td[data-title="Giao hàng"] {
+  color: var(--teddy-pink-main) !important;
+  font-size: 14px !important;
+}
+
+/* Nút Tiến hành thanh toán */
+.woocommerce a.button.checkout {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  padding: 15px !important;
+  margin-top: 20px !important;
+  background-color: var(--teddy-pink-main) !important;
+  color: #ffffff !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  border: none !important;
+}
+
+.woocommerce a.button.checkout:hover {
+  background-color: var(--teddy-pink-hover) !important;
+}
+
+/* =======================================
+   B. GIAO DIỆN THANH TOÁN (CHECKOUT)
+======================================= */
+.woocommerce-checkout #customer_details .col-1,
+.woocommerce-checkout #customer_details .col-2 {
+  background-color: #fff !important;
+  padding: 20px !important;
+  border: 1px solid var(--teddy-border-color) !important;
+  margin-bottom: 20px !important;
+}
+
+.woocommerce-checkout #payment {
+  background-color: #fff !important;
+  border-radius: var(--teddy-radius-btn) !important;
+  padding: 20px !important;
+  border: 1px solid var(--teddy-border-color) !important;
+  margin-top: 20px !important;
+}
+
+.woocommerce #place_order {
+  background-color: var(--teddy-pink-main) !important;
+  color: #ffffff !important;
+  border-radius: var(--teddy-radius-btn) !important;
+  padding: 15px 30px !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  width: 100% !important;
+  margin-top: 15px !important;
+}
+
+.woocommerce #place_order:hover {
+  background-color: var(--teddy-pink-hover) !important;
+}
+
+/* =======================================
+   C. GIAO DIỆN WOOCOMMERCE BLOCKS (Dành cho trang chưa dùng Shortcode)
+======================================= */
+/* 1. Chia từng sản phẩm vào khung trắng riêng (Dập nổi) */
+.wc-block-cart-item {
+  background-color: #ffffff !important;
+  border-radius: 20px !important; /* Bo góc nhiều hơn */
+  padding: 25px !important;
+  margin-bottom: 25px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important; /* Bóng dập nổi đậm hơn */
+  border: none !important; /* Bỏ viền để hiệu ứng bóng rõ hơn */
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Hình ảnh sản phẩm */
+.wc-block-cart-item__image img {
+  border-radius: 8px !important;
+}
+
+/* Tên sản phẩm */
+.wc-block-components-product-name {
+  color: var(--teddy-pink-main) !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+}
+
+/* Giá sản phẩm */
+.wc-block-components-product-price__value {
+  color: #ff3b30 !important;
+  font-weight: bold !important;
+}
+
+/* 2. Ô Số lượng (Quantity) trong Blocks */
+.wc-block-components-quantity-selector {
+  display: inline-flex !important;
+  align-items: center !important;
+  border: 1px solid var(--teddy-pink-light) !important;
+  border-radius: 20px !important;
+  padding: 2px !important;
+  background: transparent !important;
+}
+
+.wc-block-components-quantity-selector__input {
+  border: none !important;
+  background: transparent !important;
+  text-align: center !important;
+  width: 40px !important;
+  padding: 0 !important;
+  font-weight: bold !important;
+  color: var(--teddy-pink-main) !important;
+  box-shadow: none !important;
+}
+
+/* Nút +/- */
+.wc-block-components-quantity-selector__button {
+  background-color: transparent !important;
+  color: var(--teddy-pink-main) !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: bold !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 18px !important;
+  cursor: pointer !important;
+}
+
+/* 3. Nút xoá sản phẩm (Trash icon) */
+.wc-block-cart-item__remove-link {
+  color: #d1d1d1 !important;
+  background: transparent !important;
+  transition: all 0.3s ease !important;
+}
+.wc-block-cart-item__remove-link:hover {
+  color: var(--teddy-pink-main) !important;
+}
+
+/* 4. Tổng phụ (Subtotal) */
+.wc-block-cart-item__total {
+  color: #ff3b30 !important;
+  font-weight: bold !important;
+}
+
+/* 5. Cột Tổng cộng Giỏ hàng (Totals wrapper) */
+.wc-block-components-totals-wrapper {
+  background-color: transparent !important;
+}
+
+.wc-block-components-totals-item__value {
+  color: #ff3b30 !important;
+}
+
+.wc-block-components-totals-item__label {
+  color: var(--teddy-pink-main) !important;
+}
+
+/* Nút Tiến hành thanh toán (Giữ nền hồng) */
+.wc-block-cart__submit-button,
+.wc-block-components-checkout-button {
+  background-color: var(--teddy-pink-main) !important;
+  color: #ffffff !important;
+  border-radius: 4px !important;
+  padding: 15px 30px !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  width: 100% !important;
+  text-align: center !important;
+  display: block !important;
+}
+
+.wc-block-cart__submit-button:hover,
+.wc-block-components-checkout-button:hover {
+  background-color: var(--teddy-pink-hover) !important;
+}
+
+/* =======================================
+   D. GIAO DIỆN ĐƠN HÀNG ĐÃ NHẬN (THANK YOU PAGE)
+======================================= */
+.woocommerce-order {
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+}
+
+.woocommerce-order > * {
+  width: 100% !important; /* Mặc định các khối chiếm 100% */
+}
+
+/* Lời cảm ơn (Thông báo) */
+.woocommerce-order > p.woocommerce-notice,
+.woocommerce-order > p.woocommerce-thankyou-order-received {
+  background-color: var(--teddy-pink-light) !important;
+  color: var(--teddy-pink-hover) !important;
+  padding: 20px !important;
+  border-radius: 16px !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  font-size: 18px !important;
+  border: 2px dashed #ffffff !important;
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.2) !important;
+  margin-bottom: 30px !important;
+}
+.woocommerce-order > p.woocommerce-notice::before {
+  display: none !important;
+}
+
+/* Khối thông tin chung (Mã đơn, Ngày, Tổng tiền, Phương thức) */
+ul.order_details {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+  gap: 15px !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  margin-bottom: 30px !important;
+}
+
+ul.order_details li {
+  flex: 1 1 calc(25% - 15px) !important;
+  background-color: var(--teddy-white) !important;
+  padding: 20px !important;
+  border-radius: 16px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05) !important;
+  text-align: center !important;
+  border: none !important;
+  border-right: none !important;
+  float: none !important;
+  font-size: 14px !important;
+  margin: 0 !important;
+}
+
+ul.order_details li strong {
+  display: block !important;
+  color: var(--teddy-pink-main) !important;
+  font-size: 16px !important;
+  margin-top: 5px !important;
+}
+
+/* Bảng chi tiết đơn hàng (Sản phẩm) */
+.woocommerce-order-details {
+  background-color: var(--teddy-white) !important;
+  border-radius: 20px !important;
+  padding: 30px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 30px !important;
+}
+
+.woocommerce-order-details h2 {
+  color: var(--teddy-pink-main) !important;
+  font-size: 20px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 20px !important;
+  text-align: center !important;
+  border: none !important;
+}
+
+.woocommerce-order-details table.shop_table {
+  border: none !important;
+  margin-bottom: 0 !important;
+}
+
+.woocommerce-order-details table.shop_table thead th {
+  background-color: transparent !important;
+  color: #333 !important;
+  border-bottom: 2px solid var(--teddy-border-color) !important;
+}
+
+.woocommerce-order-details table.shop_table tbody td,
+.woocommerce-order-details table.shop_table tfoot th,
+.woocommerce-order-details table.shop_table tfoot td {
+  border-top: none !important;
+  border-bottom: 1px solid var(--teddy-border-color) !important;
+  padding: 15px 10px !important;
+}
+
+.woocommerce-order-details table.shop_table tbody td.product-name a {
+  color: var(--teddy-text-color) !important;
+  font-weight: 600 !important;
+}
+
+.woocommerce-order-details table.shop_table tbody td.product-total,
+.woocommerce-order-details table.shop_table tfoot td {
+  color: var(--teddy-pink-main) !important;
+  font-weight: bold !important;
+}
+
+.woocommerce-order-details table.shop_table tfoot tr:last-child th,
+.woocommerce-order-details table.shop_table tfoot tr:last-child td {
+  border-bottom: none !important;
+  font-size: 18px !important;
+}
+
+/* Chi tiết khách hàng (Địa chỉ) */
+.woocommerce-customer-details {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  justify-content: space-between !important;
+}
+
+.woocommerce-customer-details h2 {
+  color: var(--teddy-pink-main) !important;
+  font-size: 20px !important;
+  width: 100% !important;
+  margin-bottom: 10px !important;
+  text-align: center !important;
+}
+
+.woocommerce-customer-details .col2-set {
+  display: flex !important;
+  width: 100% !important;
+  gap: 20px !important;
+}
+
+.woocommerce-customer-details .col-1,
+.woocommerce-customer-details .col-2 {
+  flex: 1 !important;
+  background-color: var(--teddy-white) !important;
+  border-radius: 20px !important;
+  padding: 25px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05) !important;
+  width: auto !important;
+  float: none !important;
+}
+
+.woocommerce-customer-details address {
+  border: none !important;
+  padding: 0 !important;
+  color: #555 !important;
+  line-height: 1.8 !important;
+}
+
+/* Responsive cho Mobile */
+@media (max-width: 768px) {
+  ul.order_details {
+    flex-direction: column !important;
+  }
+  ul.order_details li {
+    flex: 1 1 100% !important;
+  }
+  .woocommerce-customer-details .col2-set {
+    flex-direction: column !important;
+  }
+}
+
+/* ---------------------------------------------------
+   SẮP XẾP MÃ QR VÀ THÔNG TIN CHUYỂN KHOẢN (NGANG NHAU)
+--------------------------------------------------- */
+.woocommerce-order > .woocommerce-vietqr-qr-scan,
+.woocommerce-order > .woocommerce-vietqr-bank-details {
+  width: calc(50% - 15px) !important;
+  background-color: var(--teddy-white) !important;
+  border-radius: 20px !important;
+  padding: 30px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 30px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+/* Tiêu đề 2 phần này */
+.woocommerce-vietqr-qr-scan h2.wc-vietqr-bank-details-heading,
+.woocommerce-vietqr-bank-details h2.wc-vietqr-bank-details-heading {
+  color: var(--teddy-pink-main) !important;
+  font-size: 20px !important;
+  margin-bottom: 20px !important;
+  border: none !important;
+  text-transform: uppercase !important;
+  width: 100% !important;
+}
+
+/* Căn chỉnh ảnh QR */
+.woocommerce-vietqr-qr-scan #qrcode {
+  background-color: #fff !important;
+  padding: 10px !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+}
+
+.woocommerce-vietqr-qr-scan #qrcode img {
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 0 !important;
+}
+
+/* Sửa Nút tải ảnh QR của VietQR */
+#btnDownloadQR {
+  background-color: var(--teddy-pink-main) !important;
+  border-color: var(--teddy-pink-main) !important;
+  border-radius: 16px !important;
+  margin-top: 20px !important;
+  box-shadow: 0 4px 15px rgba(242, 101, 163, 0.3) !important;
+}
+
+/* Bảng thông tin chuyển khoản bên phải */
+.woocommerce-vietqr-bank-details table.table-bordered {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border: none !important;
+  background: transparent !important;
+  margin-top: 10px !important;
+}
+
+.woocommerce-vietqr-bank-details table.table-bordered td {
+  padding: 15px 10px !important;
+  border: none !important;
+  border-bottom: 1px dashed var(--teddy-border-color) !important;
+  background: transparent !important;
+}
+
+.woocommerce-vietqr-bank-details table.table-bordered tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Màu chữ cho bảng ngân hàng */
+.woocommerce-vietqr-bank-details table.table-bordered td strong {
+  color: var(--teddy-text-color) !important;
+  font-weight: 600 !important;
+}
+
+.woocommerce-vietqr-bank-details table.table-bordered td span,
+.woocommerce-vietqr-bank-details table.table-bordered td div {
+  color: var(--teddy-pink-main) !important;
+  font-weight: bold !important;
+}
+
+/* Chú thích màu đỏ của VietQR */
+.woocommerce-vietqr-bank-details h4 {
+  background-color: #fff0f5 !important;
+  color: var(--teddy-pink-hover) !important;
+  padding: 15px !important;
+  border-radius: 12px !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  border: 1px dashed var(--teddy-pink-main) !important;
+  margin-bottom: 15px !important;
+}
+
+/* Responsive khi màn hình nhỏ (Mobile) */
+@media (max-width: 768px) {
+  .woocommerce-order > .woocommerce-vietqr-qr-scan,
+  .woocommerce-order > .woocommerce-vietqr-bank-details {
+    width: 100% !important;
+  }
 }
