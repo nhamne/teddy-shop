@@ -8,6 +8,60 @@ function storefront_child_enqueue_styles()
     wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'));
 }
 
+/* ========================================================
+   INJECT CSS CĂN TRÁI BREADCRUMB & TIÊU ĐỀ TRANG
+   Dùng wp_head priority 9999 để chạy SAU tất cả CSS khác
+   (kể cả Customizer, plugin, inline styles của theme)
+======================================================== */
+add_action('wp_head', 'teddy_force_left_align_css', 9999);
+function teddy_force_left_align_css()
+{
+    ?>
+    <style id="teddy-left-align-override">
+        /* Căn trái breadcrumb (Trang chủ > Thú bông > ...) */
+        .storefront-breadcrumb,
+        .woocommerce-breadcrumb {
+            text-align: left !important;
+        }
+
+        /* Căn trái tiêu đề trang danh mục sản phẩm */
+        .woocommerce-products-header,
+        .woocommerce-products-header__title,
+        h1.woocommerce-products-header__title {
+            text-align: left !important;
+        }
+
+        /* Căn trái tiêu đề trang thông thường (Liên hệ, v.v.) */
+        .entry-title,
+        .page-title,
+        h1.entry-title,
+        h1.page-title {
+            text-align: left !important;
+        }
+
+        /* Ghi đè rule của Storefront trong @media (min-width: 768px) */
+        @media (min-width: 768px) {
+            .storefront-full-width-content .woocommerce-products-header,
+            .storefront-full-width-content .woocommerce-products-header__title,
+            .storefront-full-width-content.woocommerce-cart .entry-header,
+            .storefront-full-width-content.woocommerce-checkout .entry-header,
+            .storefront-full-width-content.woocommerce-account .entry-header,
+            .storefront-full-width-content .entry-header,
+            .storefront-full-width-content .entry-title,
+            .storefront-full-width-content .page-title {
+                text-align: left !important;
+                padding: 1em 0 !important;
+            }
+
+            .storefront-full-width-content .storefront-breadcrumb,
+            .storefront-full-width-content .woocommerce-breadcrumb {
+                text-align: left !important;
+            }
+        }
+    </style>
+    <?php
+}
+
 // Thêm Script tạo Carousel cho lưới sản phẩm Elementor Shortcode
 add_action('wp_footer', 'custom_product_carousel_script');
 function custom_product_carousel_script()
@@ -642,5 +696,58 @@ function teddy_force_full_width_body_class($classes)
         }
     }
     return $classes;
+}
+
+/* ========================================================
+   THÊM NÚT CỘNG/TRỪ (+ / -) CHO Ô SỐ LƯỢNG SẢN PHẨM
+======================================================== */
+add_action('wp_footer', 'teddy_add_quantity_plus_minus');
+function teddy_add_quantity_plus_minus() {
+    // Chỉ chạy ở trang sản phẩm hoặc giỏ hàng
+    if (!is_product() && !is_cart()) return;
+    ?>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Chèn nút - và + vào trước và sau input số lượng
+            $('form.cart .quantity, .woocommerce-cart-form .quantity').each(function() {
+                if (!$(this).hasClass('buttons_added')) {
+                    $(this).addClass('buttons_added')
+                           .prepend('<input type="button" value="-" class="minus" />')
+                           .append('<input type="button" value="+" class="plus" />');
+                }
+            });
+
+            // Xử lý sự kiện click
+            $(document).on('click', '.plus, .minus', function() {
+                var $qty = $(this).siblings('.qty');
+                var currentVal = parseFloat($qty.val());
+                var max = parseFloat($qty.attr('max'));
+                var min = parseFloat($qty.attr('min'));
+                var step = $qty.attr('step');
+
+                // Giá trị mặc định
+                if (!currentVal || currentVal === '' || currentVal === 'NaN') currentVal = 0;
+                if (max === '' || max === 'NaN') max = '';
+                if (min === '' || min === 'NaN') min = 0;
+                if (step === 'any' || step === '' || step === undefined || parseFloat(step) === 'NaN') step = 1;
+
+                if ($(this).is('.plus')) {
+                    if (max && (max == currentVal || currentVal > max)) {
+                        $qty.val(max);
+                    } else {
+                        $qty.val(currentVal + parseFloat(step));
+                    }
+                } else {
+                    if (min && (min == currentVal || currentVal < min)) {
+                        $qty.val(min);
+                    } else if (currentVal > 0) {
+                        $qty.val(currentVal - parseFloat(step));
+                    }
+                }
+                $qty.trigger('change');
+            });
+        });
+    </script>
+    <?php
 }
 ?>
