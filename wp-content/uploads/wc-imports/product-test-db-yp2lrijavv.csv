@@ -1,0 +1,9 @@
+Type,SKU,Name,Published,Regular price,Sale price,Categories,Images,Short description,Parent,Attribute 1 name,Attribute 1 value(s),Attribute 1 visible,Attribute 1 global
+variable,TS-100,Gấu Bông Hello Kitty Mặc Váy Hồng,1,,,Gấu bông hoạt hình > Hello Kitty,http://localhost/teddy-shop/wp-content/uploads/2026/05/kitty-vayhong.webp,"Gấu Bông Hello Kitty Mặc Váy Hồng được làm từ chất liệu cao cấp, bông PP 3D tinh khiết siêu mềm mịn. Thiết kế tinh xảo, đường may chắc chắn, phù hợp làm quà tặng hoặc trang trí.",,Kích thước,"30cm, 50cm, 70cm",1,1
+variation,TS-100-1,Gấu Bông Hello Kitty Mặc Váy Hồng - 30cm,1,340000,299000,,http://localhost/teddy-shop/wp-content/uploads/2026/05/kitty-vayhong.webp,,TS-100,Kích thước,30cm,,1
+variation,TS-100-2,Gấu Bông Hello Kitty Mặc Váy Hồng - 50cm,1,410000,360000,,http://localhost/teddy-shop/wp-content/uploads/2026/05/kitty-vayhong.webp,,TS-100,Kích thước,50cm,,1
+variation,TS-100-3,Gấu Bông Hello Kitty Mặc Váy Hồng - 70cm,1,480000,422000,,http://localhost/teddy-shop/wp-content/uploads/2026/05/kitty-vayhong.webp,,TS-100,Kích thước,70cm,,1
+variable,TS-101,Hello Kitty Ôm Trái Tim Đỏ,1,,,Gấu bông hoạt hình > Hello Kitty,http://localhost/teddy-shop/wp-content/uploads/2026/05/kitty-omtraitim.webp,"Hello Kitty Ôm Trái Tim Đỏ được làm từ chất liệu cao cấp, bông PP 3D tinh khiết siêu mềm mịn. Thiết kế tinh xảo, đường may chắc chắn, phù hợp làm quà tặng hoặc trang trí.",,Kích thước,"30cm, 50cm, 70cm",1,1
+variation,TS-101-1,Hello Kitty Ôm Trái Tim Đỏ - 30cm,1,250000,220000,,http://localhost/teddy-shop/wp-content/uploads/2026/05/kitty-omtraitim.webp,,TS-101,Kích thước,30cm,,1
+variation,TS-101-2,Hello Kitty Ôm Trái Tim Đỏ - 50cm,1,320000,281000,,http://localhost/teddy-shop/wp-content/uploads/2026/05/kitty-omtraitim.webp,,TS-101,Kích thước,50cm,,1
+variation,TS-101-3,Hello Kitty Ôm Trái Tim Đỏ - 70cm,1,390000,343000,,http://localhost/teddy-shop/wp-content/uploads/2026/05/kitty-omtraitim.webp,,TS-101,Kích thước,70cm,,1

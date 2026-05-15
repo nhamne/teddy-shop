@@ -24,7 +24,7 @@
 	<?php wp_body_open(); ?>
 
 	<div style="background-color: #2973ceff; color: white; text-align: center; padding: 6px; font-weight: bold;">
-		Chào mừng đến với hệ thống bán gấu bông Teddy Shop! Giảm giá 10% cho đơn hàng đầu tiên.
+		Chào mừng đến với hệ thống bán gấu bông Teddy Shop! Giảm giá cho đơn hàng có giá trị từ 500.000đ trở lên.
 	</div>
 
 	<?php do_action('storefront_before_site'); ?>
