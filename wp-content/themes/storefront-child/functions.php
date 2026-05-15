@@ -797,6 +797,588 @@ function teddy_page_header_shortcode($atts) {
     </header>
     <?php
     return ob_get_clean();
+}// ==========================================
+// PHẦN 1: SHORTCODE FORM ĐĂNG NHẬP [custom_admin_login]
+// ==========================================
+add_action('template_redirect', 'ts_process_admin_login_action');
+function ts_process_admin_login_action() {
+    global $ts_login_error_message;
+    $ts_login_error_message = '';
+
+    if (isset($_POST['ts_admin_login_submit'])) {
+        if (isset($_POST['ts_admin_login_nonce']) && wp_verify_nonce($_POST['ts_admin_login_nonce'], 'ts_admin_login_action')) {
+            $creds = array(
+                'user_login'    => sanitize_user($_POST['ts_username']),
+                'user_password' => $_POST['ts_password'],
+                'remember'      => true
+            );
+            
+            $user = wp_signon($creds, is_ssl());
+            
+            if (is_wp_error($user)) {
+                $ts_login_error_message = "Tên đăng nhập hoặc mật khẩu không đúng.";
+            } else {
+                if (in_array('administrator', (array) $user->roles)) {
+                    // Redirect bằng PHP an toàn vì hook chạy trước khi HTML xuất ra
+                    wp_safe_redirect(home_url('/bang-dieu-khien-admin'));
+                    exit;
+                } else {
+                    wp_logout();
+                    $ts_login_error_message = "Lỗi: Khách hàng không có quyền truy cập trang quản trị này.";
+                }
+            }
+        } else {
+            $ts_login_error_message = "Lỗi bảo mật. Vui lòng thử lại.";
+        }
+    }
 }
 
-?>
+add_shortcode('custom_admin_login', 'ts_custom_admin_login_shortcode');
+function ts_custom_admin_login_shortcode() {
+    ob_start();
+    
+    global $ts_login_error_message;
+    $login_error = $ts_login_error_message;
+
+    // BƯỚC 2: NẾU ĐÃ ĐĂNG NHẬP VÀ LÀ ADMIN THÌ ẨN FORM
+    if (is_user_logged_in() && current_user_can('administrator')) {
+        echo '<p style="text-align:center;">Bạn đã đăng nhập với quyền Admin. <a href="'.esc_url(home_url('/bang-dieu-khien-admin')).'">Vào Bảng điều khiển</a></p>';
+        return ob_get_clean();
+    }
+
+    // BƯỚC 3: GIAO DIỆN HTML & CSS CHO FORM
+    ?>
+    <style>
+        .ts-login-container { max-width: 400px; margin: 50px auto; padding: 30px; background: #fff; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); font-family: sans-serif; }
+        .ts-login-container h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .ts-login-group { margin-bottom: 15px; }
+        .ts-login-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        .ts-login-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .ts-btn-login { width: 100%; padding: 14px; background-color: #ff69b4; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .ts-btn-login:hover { background-color: #ff1493; }
+        .ts-error { color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-size: 14px;}
+    </style>
+
+    <div class="ts-login-container">
+        <h2>Đăng Nhập Quản Trị</h2>
+        <?php if ($login_error) : ?>
+            <div class="ts-error"><?php echo esc_html($login_error); ?></div>
+        <?php endif; ?>
+        <form method="POST" action="">
+            <!-- Tạo trường Nonce để chống CSRF Attack -->
+            <?php wp_nonce_field('ts_admin_login_action', 'ts_admin_login_nonce'); ?>
+            <div class="ts-login-group">
+                <label>Tên đăng nhập</label>
+                <input type="text" name="ts_username" required placeholder="Nhập username...">
+            </div>
+            <div class="ts-login-group">
+                <label>Mật khẩu</label>
+                <input type="password" name="ts_password" required placeholder="Nhập mật khẩu...">
+            </div>
+            <button type="submit" name="ts_admin_login_submit" class="ts-btn-login">Đăng Nhập</button>
+        </form>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+// ==========================================
+// PHẦN 2: BẢNG ĐIỀU KHIỂN MEGA ADMIN [frontend_dashboard]
+// ==========================================
+add_shortcode('frontend_dashboard', 'ts_mega_dashboard_shortcode');
+function ts_mega_dashboard_shortcode() {
+    // 1. Kiểm tra quyền
+    if (!is_user_logged_in() || !current_user_can('administrator')) {
+        return '<div style="background:#ffebee; color:#d32f2f; padding:20px; text-align:center; font-weight:bold;"> Lỗi: Từ chối truy cập! </div>';
+    }
+    
+    // 2. Định tuyến (Router)
+    $tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'dashboard';
+    
+    ob_start();
+    ?>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        .ts-dash-wrapper { display: flex; gap: 30px; font-family: 'Nunito', sans-serif; flex-wrap: wrap; background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); padding: 35px; border-radius: 35px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .ts-sidebar { width: 250px; background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); padding: 30px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.03); align-self: start; border: 1px solid rgba(255,255,255,0.9); }
+        .ts-sidebar a { display: block; padding: 16px 22px; margin-bottom: 15px; color: #666; text-decoration: none; border-radius: 20px; font-weight: 800; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .ts-sidebar a.active, .ts-sidebar a:hover { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #fff; box-shadow: 0 10px 25px rgba(255, 154, 158, 0.4); transform: translateX(8px); }
+        .ts-content { flex: 1; min-width: 320px; background: rgba(255,255,255,0.75); backdrop-filter: blur(20px); padding: 45px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.9); }
+        
+        .ts-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 30px; font-size: 15px;}
+        .ts-table th { background: rgba(255, 255, 255, 0.8); padding: 20px; text-align: left; font-weight: 800; color: #555; border-bottom: 2px solid rgba(0,0,0,0.03); }
+        .ts-table th:first-child { border-top-left-radius: 20px; border-bottom-left-radius: 20px; }
+        .ts-table th:last-child { border-top-right-radius: 20px; border-bottom-right-radius: 20px; }
+        .ts-table td { padding: 20px; border-bottom: 1px solid rgba(0,0,0,0.03); vertical-align: middle; transition: background 0.3s; }
+        .ts-table tr:hover td { background: rgba(255, 255, 255, 0.9); }
+        .ts-table img { border-radius: 15px; object-fit: cover; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        
+        .ts-btn { padding: 12px 24px; border: none; border-radius: 20px; cursor: pointer; color: #fff; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-size: 14px; font-weight: 800; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .ts-btn:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
+        .ts-btn-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .ts-btn-red { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); }
+        .ts-btn-gray { background: linear-gradient(135deg, #a8abad 0%, #ccd2d6 100%); }
+        
+        .ts-form-group { margin-bottom: 25px; }
+        .ts-form-group label { display: block; margin-bottom: 12px; font-weight: 800; color: #555;}
+        .ts-form-group input, .ts-form-group textarea, .ts-form-group select { width: 100%; padding: 16px; border: 2px solid transparent; background: rgba(255,255,255,0.9); border-radius: 20px; box-sizing: border-box; font-family: 'Nunito', sans-serif; transition: all 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
+        .ts-form-group input:focus, .ts-form-group textarea:focus, .ts-form-group select:focus { outline: none; border-color: #ff9a9e; background: #fff; box-shadow: 0 0 0 5px rgba(255, 154, 158, 0.2); }
+        .ts-alert { padding: 20px 25px; background: linear-gradient(to right, #d4edda, #c3e6cb); color: #155724; border-radius: 20px; margin-bottom: 35px; font-weight:800; box-shadow: 0 10px 25px rgba(21, 87, 36, 0.1); display:flex; align-items:center; gap:10px; animation: ts-slide-down 0.5s ease; }
+        @keyframes ts-slide-down { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .ts-stat-card { flex:1; min-width:220px; padding:35px; border-radius:30px; color:#fff; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.1); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+        .ts-stat-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 25px 45px rgba(0,0,0,0.15); }
+        .ts-stat-card-1 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+        .ts-stat-card-2 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+        .ts-stat-card-3 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+        .ts-stat-card h3 { font-size: 18px; margin-bottom: 15px; font-weight: 800; opacity: 0.95; color: #fff;}
+        .ts-stat-card p { font-size: 46px; font-weight: 900; margin: 0; line-height: 1; text-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        h2 { font-weight: 900; color: #333; margin-top: 0; margin-bottom: 35px; letter-spacing: -0.5px; }
+        h3 { font-weight: 800; color: #444; margin-bottom: 25px;}
+        .ts-form-box { background: rgba(255,255,255,0.7); padding:40px; border-radius:30px; border:1px solid rgba(255,255,255,0.9); margin-top:45px; box-shadow: 0 15px 35px rgba(0,0,0,0.03); backdrop-filter: blur(10px); }
+    </style>
+    
+    <div class="ts-dash-wrapper">
+        <!-- MENU SIDEBAR -->
+        <div class="ts-sidebar">
+            <a href="?tab=dashboard" class="<?php echo $tab=='dashboard'?'active':''; ?>">📊 Tổng quan</a>
+            <a href="?tab=products" class="<?php echo $tab=='products'?'active':''; ?>">🧸 Quản lý Sản phẩm</a>
+            <a href="?tab=categories" class="<?php echo $tab=='categories'?'active':''; ?>">📁 Quản lý Danh mục</a>
+            <a href="?tab=orders" class="<?php echo $tab=='orders'?'active':''; ?>">🛒 Quản lý Đơn hàng</a>
+        </div>
+        
+        <!-- NỘI DUNG CHÍNH -->
+        <div class="ts-content">
+            <?php if (isset($_GET['msg'])) echo '<div class="ts-alert">✅ Thao tác thành công!</div>'; ?>
+            <?php
+            // Load giao diện theo Tab
+            if ($tab === 'dashboard') ts_render_dashboard_tab();
+            elseif ($tab === 'products') ts_render_products_tab();
+            elseif ($tab === 'categories') ts_render_categories_tab();
+            elseif ($tab === 'orders') ts_render_orders_tab();
+            ?>
+        </div>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+// Giao diện: TỔNG QUAN
+function ts_render_dashboard_tab() {
+    $today = date('Y-m-d');
+    $orders_today = wc_get_orders(['date_created' => '>=' . $today, 'limit' => -1, 'return' => 'ids']);
+    
+    $total_sales = 0;
+    $all_orders = wc_get_orders(['status' => 'completed', 'limit' => -1]);
+    foreach ($all_orders as $o) { $total_sales += $o->get_total(); }
+
+    $low_stock = wc_get_products(['stock_status' => 'instock', 'limit' => -1]);
+
+    $total_products = wp_count_posts('product')->publish;
+
+    echo '<h2>📊 Tổng quan hệ thống</h2>';
+    echo '<div style="display:flex; gap:25px; margin-bottom:40px; flex-wrap:wrap;">';
+    echo '<div class="ts-stat-card ts-stat-card-1"><h3>🎁 Tổng SP Đang Bán</h3><p>'.$total_products.'</p></div>';
+    echo '<div class="ts-stat-card ts-stat-card-3"><h3>📦 Đơn Mới Hôm Nay</h3><p>'.count($orders_today).'</p></div>';
+    echo '<div class="ts-stat-card ts-stat-card-2"><h3>💰 Tổng Doanh Thu</h3><p>'.wc_price($total_sales).'</p></div>';
+    echo '</div>';
+
+    echo '<h3>⚠️ Sản phẩm sắp hết hàng (Dưới 5 con)</h3>';
+    echo '<table class="ts-table"><tr><th>Tên sản phẩm</th><th>Tồn kho</th></tr>';
+    $has_low = false;
+    foreach ($low_stock as $p) {
+        if ($p->managing_stock() && $p->get_stock_quantity() <= 5) {
+            echo '<tr><td>'.$p->get_name().'</td><td><b style="color:red;">'.$p->get_stock_quantity().'</b></td></tr>';
+            $has_low = true;
+        }
+    }
+    if (!$has_low) echo '<tr><td colspan="2">Tất cả sản phẩm đều dồi dào.</td></tr>';
+    echo '</table>';
+}
+
+// Giao diện: SẢN PHẨM
+function ts_render_products_tab() {
+    $products = wc_get_products(['limit' => 30, 'orderby' => 'date', 'order' => 'DESC', 'status' => ['publish', 'draft', 'private']]);
+    
+    echo '<h2>🧸 Quản lý sản phẩm</h2>';
+    echo '<table class="ts-table"><tr><th>Ảnh</th><th>Tên Gấu</th><th>Giá</th><th>Kho</th><th>Trạng thái</th><th>Hành động</th></tr>';
+    foreach ($products as $p) {
+        $status = $p->get_status() == 'publish' ? '<span style="color:green;font-weight:bold;">Đang bán</span>' : '<span style="color:gray;font-weight:bold;">Tạm ẩn</span>';
+        
+        // Form cập nhật số lượng kho nhanh
+        $stock_val = $p->managing_stock() ? $p->get_stock_quantity() : 0;
+        $stock_form = '<form method="POST" style="display:flex;gap:5px;align-items:center;margin:0;">';
+        $stock_form .= wp_nonce_field('update_stock_'.$p->get_id(), 'ts_nonce', true, false);
+        $stock_form .= '<input type="hidden" name="ts_action" value="update_stock"><input type="hidden" name="ts_id" value="'.$p->get_id().'">';
+        $stock_form .= '<input type="number" name="ts_stock_qty" value="'.$stock_val.'" style="width:60px;padding:6px;border:1px solid #ddd;border-radius:4px;text-align:center;">';
+        $stock_form .= '<button type="submit" class="ts-btn ts-btn-blue" style="padding:6px 10px;font-size:11px;" title="Cập nhật số lượng kho">Lưu</button>';
+        $stock_form .= '</form>';
+
+        echo '<tr>';
+        echo '<td>'.$p->get_image([50,50]).'</td>';
+        echo '<td><strong>'.$p->get_name().'</strong></td>';
+        echo '<td>'.$p->get_price_html().'</td>';
+        echo '<td>'.$stock_form.'</td>';
+        echo '<td>'.$status.'</td>';
+        echo '<td>';
+        // Nút Ẩn/Hiện
+        echo '<form method="POST" style="display:inline-block;">';
+        wp_nonce_field('hide_prod_'.$p->get_id(), 'ts_nonce');
+        echo '<input type="hidden" name="ts_action" value="hide_product"><input type="hidden" name="ts_id" value="'.$p->get_id().'">';
+        echo '<button type="submit" class="ts-btn ts-btn-gray" style="margin-right:5px;" title="Tạm dừng/Mở bán">'.($p->get_status()=='publish'?'Ẩn':'Hiện').'</button>';
+        echo '</form>';
+        // Nút Xóa
+        echo '<form method="POST" style="display:inline-block;" onsubmit="return confirm(\'Xóa vĩnh viễn sản phẩm này?\');">';
+        wp_nonce_field('del_prod_'.$p->get_id(), 'ts_nonce');
+        echo '<input type="hidden" name="ts_action" value="delete_product"><input type="hidden" name="ts_id" value="'.$p->get_id().'">';
+        echo '<button type="submit" class="ts-btn ts-btn-red">Xóa</button>';
+        echo '</form>';
+        echo '</td></tr>';
+    }
+    echo '</table>';
+
+    // Form thêm sản phẩm (Có hỗ trợ Upload Ảnh)
+    echo '<div class="ts-form-box">';
+    echo '<h3>➕ Thêm Gấu Bông Mới</h3>';
+    echo '<form method="POST" enctype="multipart/form-data">';
+    wp_nonce_field('add_product', 'ts_nonce');
+    echo '<input type="hidden" name="ts_action" value="add_product">';
+    echo '<div class="ts-form-group"><label>Tên sản phẩm</label><input type="text" name="ts_name" required></div>';
+    echo '<div class="ts-form-group"><label>Mô tả chi tiết</label><textarea name="ts_desc" rows="4"></textarea></div>';
+    echo '<div style="display:flex; gap:15px;">';
+    echo '<div class="ts-form-group" style="flex:1;"><label>Giá bán (VNĐ)</label><input type="number" name="ts_price" required></div>';
+    echo '<div class="ts-form-group" style="flex:1;"><label>Số lượng trong kho</label><input type="number" name="ts_stock" required></div>';
+    echo '</div>';
+    echo '<div class="ts-form-group"><label>Tải lên ảnh sản phẩm</label><input type="file" name="ts_image" accept="image/*" required></div>';
+    echo '<button type="submit" class="ts-btn ts-btn-blue">Lưu sản phẩm</button>';
+    echo '</form></div>';
+}
+
+// Giao diện: ĐƠN HÀNG
+function ts_render_orders_tab() {
+    // Nếu đang xem chi tiết đơn
+    if (isset($_GET['view_order'])) {
+        $order = wc_get_order(intval($_GET['view_order']));
+        if ($order) {
+            echo '<a href="?tab=orders" class="ts-btn ts-btn-gray">⬅ Trở về danh sách</a>';
+            echo '<div class="ts-form-box">';
+            echo '<h3>Chi tiết đơn hàng #'.$order->get_id().'</h3>';
+            echo '<p><strong>Tên khách hàng:</strong> '.$order->get_billing_first_name().' '.$order->get_billing_last_name().'</p>';
+            echo '<p><strong>Điện thoại:</strong> '.$order->get_billing_phone().'</p>';
+            echo '<p><strong>Địa chỉ giao hàng:</strong> '.$order->get_shipping_address_1().', '.$order->get_shipping_city().'</p>';
+            echo '<hr>';
+            echo '<h4>Gấu bông đã mua:</h4><ul>';
+            foreach ($order->get_items() as $item) {
+                echo '<li>'.$item->get_name().' <b>x '.$item->get_quantity().'</b> ('.wc_price($item->get_total()).')</li>';
+            }
+            echo '</ul>';
+            echo '<p style="font-size:18px; color:#ef5350;"><strong>Tổng thanh toán:</strong> '.$order->get_formatted_order_total().'</p>';
+            echo '</div>';
+            return;
+        }
+    }
+
+    $orders = wc_get_orders(['limit' => 20, 'orderby' => 'date', 'order' => 'DESC']);
+    echo '<h2>🛒 Quản lý Đơn hàng</h2>';
+    echo '<table class="ts-table"><tr><th>Mã đơn</th><th>Ngày đặt</th><th>Khách hàng</th><th>Tổng tiền</th><th>Trạng thái (Cập nhật)</th><th>Hành động</th></tr>';
+    foreach ($orders as $order) {
+        echo '<tr>';
+        echo '<td>#'.$order->get_id().'</td>';
+        echo '<td>'.$order->get_date_created()->date_i18n('d/m/Y H:i').'</td>';
+        echo '<td>'.$order->get_billing_first_name().'</td>';
+        echo '<td>'.$order->get_formatted_order_total().'</td>';
+        echo '<td>';
+        // Dropdown Cập nhật trạng thái
+        echo '<form method="POST" style="display:flex; gap:5px;">';
+        wp_nonce_field('update_ord_'.$order->get_id(), 'ts_nonce');
+        echo '<input type="hidden" name="ts_action" value="update_order"><input type="hidden" name="ts_id" value="'.$order->get_id().'">';
+        echo '<select name="ts_status" onchange="this.form.submit()" style="padding:6px; border-radius:4px;">';
+        $statuses = wc_get_order_statuses();
+        foreach ($statuses as $key => $name) {
+            $selected = ('wc-'.$order->get_status() === $key) ? 'selected' : '';
+            echo '<option value="'.$key.'" '.$selected.'>'.$name.'</option>';
+        }
+        echo '</select></form>';
+        echo '</td>';
+        echo '<td><a href="?tab=orders&view_order='.$order->get_id().'" class="ts-btn ts-btn-blue">Xem chi tiết</a></td>';
+        echo '</tr>';
+    }
+    echo '</table>';
+}
+
+// Giao diện: DANH MỤC
+function ts_render_categories_tab() {
+    $terms = get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]);
+    echo '<h2>📁 Quản lý Danh mục (Phân loại Gấu)</h2>';
+    echo '<table class="ts-table"><tr><th>ID</th><th>Tên danh mục</th><th>Số lượng SP</th><th>Hành động</th></tr>';
+    foreach ($terms as $term) {
+        if ($term->slug == 'uncategorized') continue;
+        echo '<tr>';
+        echo '<td>'.$term->term_id.'</td>';
+        echo '<td><strong>'.$term->name.'</strong></td>';
+        echo '<td>'.$term->count.'</td>';
+        echo '<td>';
+        echo '<form method="POST" onsubmit="return confirm(\'Xóa danh mục này?\');">';
+        wp_nonce_field('del_cat_'.$term->term_id, 'ts_nonce');
+        echo '<input type="hidden" name="ts_action" value="delete_category"><input type="hidden" name="ts_id" value="'.$term->term_id.'">';
+        echo '<button type="submit" class="ts-btn ts-btn-red">Xóa</button>';
+        echo '</form>';
+        echo '</td></tr>';
+    }
+    echo '</table>';
+
+    echo '<div class="ts-form-box">';
+    echo '<h3>➕ Thêm Danh Mục Mới</h3>';
+    echo '<form method="POST">';
+    wp_nonce_field('add_cat', 'ts_nonce');
+    echo '<input type="hidden" name="ts_action" value="add_category">';
+    echo '<div class="ts-form-group"><label>Tên danh mục (Ví dụ: Gấu bông to, Gấu hoạt hình)</label><input type="text" name="ts_name" required></div>';
+    echo '<button type="submit" class="ts-btn ts-btn-blue">Tạo danh mục</button>';
+    echo '</form></div>';
+}
+
+// ==========================================
+// PHẦN 3: LOGIC XỬ LÝ DỮ LIỆU BACKEND CHO MEGA DASHBOARD
+// ==========================================
+add_action('template_redirect', 'ts_mega_dashboard_actions_handler');
+function ts_mega_dashboard_actions_handler() {
+    if (!is_user_logged_in() || !current_user_can('administrator')) return;
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ts_action'])) {
+        $action = sanitize_text_field($_POST['ts_action']);
+        
+        // 1. THÊM SẢN PHẨM MỚI (Có Upload Ảnh)
+        if ($action === 'add_product' && wp_verify_nonce($_POST['ts_nonce'], 'add_product')) {
+            $name = sanitize_text_field($_POST['ts_name']);
+            $desc = wp_kses_post($_POST['ts_desc']);
+            $price = sanitize_text_field($_POST['ts_price']);
+            $stock = intval($_POST['ts_stock']);
+            
+            $product = new WC_Product_Simple();
+            $product->set_name($name);
+            $product->set_description($desc);
+            $product->set_regular_price($price);
+            $product->set_price($price);
+            $product->set_manage_stock(true);
+            $product->set_stock_quantity($stock);
+            $product->set_stock_status($stock > 0 ? 'instock' : 'outofstock');
+            $product->set_status('publish');
+            
+            // Xử lý upload ảnh an toàn bằng API WordPress
+            if (!empty($_FILES['ts_image']['name'])) {
+                require_once(ABSPATH . 'wp-admin/includes/image.php');
+                require_once(ABSPATH . 'wp-admin/includes/file.php');
+                require_once(ABSPATH . 'wp-admin/includes/media.php');
+                $attachment_id = media_handle_upload('ts_image', 0);
+                if (!is_wp_error($attachment_id)) {
+                    $product->set_image_id($attachment_id);
+                }
+            }
+            $product->save();
+            wp_safe_redirect(add_query_arg(['tab' => 'products', 'msg' => 'added'], remove_query_arg(['msg']))); exit;
+        }
+
+        // 2. XÓA SẢN PHẨM
+        if ($action === 'delete_product' && wp_verify_nonce($_POST['ts_nonce'], 'del_prod_'.$_POST['ts_id'])) {
+            wp_delete_post(intval($_POST['ts_id']), true);
+            wp_safe_redirect(add_query_arg(['tab' => 'products', 'msg' => 'deleted'], remove_query_arg(['msg']))); exit;
+        }
+
+        // 3. ẨN/HIỆN SẢN PHẨM (Đổi trạng thái)
+        if ($action === 'hide_product' && wp_verify_nonce($_POST['ts_nonce'], 'hide_prod_'.$_POST['ts_id'])) {
+            $product = wc_get_product(intval($_POST['ts_id']));
+            if ($product) {
+                $status = $product->get_status();
+                $product->set_status($status === 'publish' ? 'draft' : 'publish'); // Đổi qua lại giữa Publish và Draft
+                $product->save();
+            }
+            wp_safe_redirect(add_query_arg(['tab' => 'products', 'msg' => 'updated'], remove_query_arg(['msg']))); exit;
+        }
+
+        // CẬP NHẬT SỐ LƯỢNG KHO NHANH (TỪ TAB SẢN PHẨM)
+        if ($action === 'update_stock' && wp_verify_nonce($_POST['ts_nonce'], 'update_stock_'.$_POST['ts_id'])) {
+            $product = wc_get_product(intval($_POST['ts_id']));
+            if ($product) {
+                $product->set_manage_stock(true);
+                $new_stock = intval($_POST['ts_stock_qty']);
+                $product->set_stock_quantity($new_stock);
+                $product->set_stock_status($new_stock > 0 ? 'instock' : 'outofstock');
+                $product->save();
+            }
+            wp_safe_redirect(add_query_arg(['tab' => 'products', 'msg' => 'updated'], remove_query_arg(['msg']))); exit;
+        }
+        
+        // 4. CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG
+        if ($action === 'update_order' && wp_verify_nonce($_POST['ts_nonce'], 'update_ord_'.$_POST['ts_id'])) {
+            $order = wc_get_order(intval($_POST['ts_id']));
+            if ($order) {
+                $order->update_status(sanitize_text_field($_POST['ts_status']), 'Cập nhật từ Frontend Dashboard.');
+            }
+            wp_safe_redirect(add_query_arg(['tab' => 'orders', 'msg' => 'updated'], remove_query_arg(['msg']))); exit;
+        }
+
+        // 5. THÊM DANH MỤC MỚI
+        if ($action === 'add_category' && wp_verify_nonce($_POST['ts_nonce'], 'add_cat')) {
+            $name = sanitize_text_field($_POST['ts_name']);
+            wp_insert_term($name, 'product_cat');
+            wp_safe_redirect(add_query_arg(['tab' => 'categories', 'msg' => 'added'], remove_query_arg(['msg']))); exit;
+        }
+
+        // 6. XÓA DANH MỤC
+        if ($action === 'delete_category' && wp_verify_nonce($_POST['ts_nonce'], 'del_cat_'.$_POST['ts_id'])) {
+            wp_delete_term(intval($_POST['ts_id']), 'product_cat');
+            wp_safe_redirect(add_query_arg(['tab' => 'categories', 'msg' => 'deleted'], remove_query_arg(['msg']))); exit;
+        }
+    }
+}
+
+// ==========================================
+// PHẦN 4: SHORTCODE NÚT ĐĂNG NHẬP ĐỘNG [nut_dang_nhap_dong]
+// ==========================================
+add_shortcode('nut_dang_nhap_dong', 'ts_nut_dang_nhap_dong_shortcode');
+function ts_nut_dang_nhap_dong_shortcode() {
+    ob_start();
+    
+    $login_url = home_url('/dang-nhap-admin');
+    $dashboard_url = home_url('/bang-dieu-khien-admin');
+    $logout_url = wp_logout_url(home_url()); // Đăng xuất và quay về trang chủ
+
+    ?>
+    <style>
+        .ts-dynamic-btn-group {
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .ts-btn-dynamic {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none !important;
+            color: #fff !important;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: none;
+        }
+        .ts-btn-primary {
+            background-color: #5bc0de;
+        }
+        .ts-btn-primary:hover {
+            background-color: #31b0d5;
+            box-shadow: 0 6px 12px rgba(91, 192, 222, 0.3);
+            transform: translateY(-2px);
+            color: #fff !important;
+        }
+        .ts-btn-danger {
+            background-color: #ef5350; /* Đỏ nhạt */
+        }
+        .ts-btn-danger:hover {
+            background-color: #e53935;
+            box-shadow: 0 6px 12px rgba(239, 83, 80, 0.3);
+            transform: translateY(-2px);
+            color: #fff !important;
+        }
+    </style>
+    <div class="ts-dynamic-btn-group">
+        <?php if (!is_user_logged_in()) : ?>
+            <!-- Trạng thái Khách chưa đăng nhập -->
+            <a href="<?php echo esc_url($login_url); ?>" class="ts-btn-dynamic ts-btn-primary">Đăng Nhập Quản Trị</a>
+        <?php else : ?>
+            <?php if (current_user_can('administrator')) : ?>
+                <!-- Trạng thái Admin -->
+                <a href="<?php echo esc_url($dashboard_url); ?>" class="ts-btn-dynamic ts-btn-primary">Vào Bảng Điều Khiển</a>
+            <?php endif; ?>
+            <!-- Nút Đăng Xuất (hiển thị cho mọi user đã đăng nhập) -->
+            <a href="<?php echo esc_url($logout_url); ?>" class="ts-btn-dynamic ts-btn-danger">Đăng Xuất</a>
+        <?php endif; ?>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+// ==========================================
+// PHẦN 5: HIỂN THỊ SỐ LƯỢNG KHO TRÊN TRANG CỬA HÀNG (SHOP)
+// ==========================================
+add_action('woocommerce_after_shop_loop_item_title', 'ts_display_stock_on_shop_page', 15);
+function ts_display_stock_on_shop_page() {
+    global $product;
+    if ($product->managing_stock()) {
+        $stock = $product->get_stock_quantity();
+        if ($stock > 0) {
+            echo '<p style="color:#2e7d32; font-weight:bold; margin-top:5px; font-size:13px;">🎁 Còn lại: ' . $stock . ' bé</p>';
+        } else {
+            echo '<p style="color:#c62828; font-weight:bold; margin-top:5px; font-size:13px;">❌ Đã hết hàng</p>';
+        }
+    } else {
+        if ($product->is_in_stock()) {
+            echo '<p style="color:#2e7d32; font-weight:bold; margin-top:5px; font-size:13px;">✅ Còn hàng</p>';
+        } else {
+            echo '<p style="color:#c62828; font-weight:bold; margin-top:5px; font-size:13px;">❌ Hết hàng</p>';
+        }
+    }
+}
+
+// ==========================================
+// PHẦN 6: THÔNG BÁO THANH TOÁN THÀNH CÔNG (TRANG THANK YOU)
+// ==========================================
+add_action('woocommerce_before_thankyou', 'ts_custom_thankyou_message', 10);
+function ts_custom_thankyou_message($order_id) {
+    if (!$order_id) return;
+    
+    $order = wc_get_order($order_id);
+    
+    // Chỉ hiển thị thông báo rực rỡ nếu đơn hàng đã được tạo
+    ?>
+    <style>
+        .ts-thankyou-box {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+            border: 2px dashed #4caf50;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2);
+            animation: ts-pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes ts-pop-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .ts-thankyou-box h2 {
+            color: #2e7d32 !important;
+            margin-top: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .ts-thankyou-box p {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .ts-check-icon {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 15px;
+            animation: ts-bounce 2s infinite;
+        }
+        @keyframes ts-bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+    <div class="ts-thankyou-box">
+        <span class="ts-check-icon">🎉</span>
+        <h2>Thanh Toán Thành Công!</h2>
+        <p>Cảm ơn bạn đã đặt gấu bông tại <strong>Teddy Shop</strong>.</p>
+        <p>Đơn hàng <strong>#<?php echo $order->get_order_number(); ?></strong> của bạn đã được hệ thống ghi nhận.</p>
+        <p>Chúng tôi sẽ gọi điện xác nhận và giao bé gấu đến bạn trong thời gian sớm nhất!</p>
+    </div>
+    <?php
+}
+
+// Ẩn dòng thông báo mặc định nhàm chán của WooCommerce
+add_filter('woocommerce_thankyou_order_received_text', '__return_empty_string');
