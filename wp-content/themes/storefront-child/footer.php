@@ -23,14 +23,28 @@
 		}
 		?>
 
-		<!-- Đã đưa style màu nền và viền ra thẻ footer tĩnh -->
-		<footer
-			style="background-color: #9fccff; width: 100%; padding: 30px 0; border-top: 2px dashed #456dff; margin-top: 40px; float: left;">
-			<div style="text-align: center; font-weight: bold; max-width: 1200px; margin: 0 auto;">
-				<h3 style="color: #4685DA; font-weight: bold;">TEDDY SHOP - THẾ GIỚI GẤU BÔNG</h3>
-				<p>Địa chỉ: Trường Đại học Điện Lực, 235 Hoàng Quốc Việt, Hà Nội</p>
-				<p>Điện thoại: 0989 211 064 | Email: cskh@teddyshop.com</p>
-				<p>Bản quyền © 2026 - Teddy Shop</p>
+		<!-- FOOTER TEDDY SHOP MỚI -->
+		<footer class="teddy-custom-footer">
+			<div class="teddy-footer-container">
+				<div class="teddy-footer-col">
+					<h3 class="teddy-footer-title">🧸 VỀ TEDDY SHOP</h3>
+					<p>Thiên đường gấu bông vô cùng đáng yêu dành cho bạn và những người thân yêu. Cam kết chất lượng, mềm mịn và an toàn cho sức khoẻ!</p>
+				</div>
+				<div class="teddy-footer-col">
+					<h3 class="teddy-footer-title">📍 THÔNG TIN LIÊN HỆ</h3>
+					<p>🏠 <strong>Địa chỉ:</strong> Trường Đại học Điện Lực, 235 Hoàng Quốc Việt, Hà Nội</p>
+					<p>📞 <strong>Hotline:</strong> 0989 211 064</p>
+					<p>📧 <strong>Email:</strong> cskh@teddyshop.com</p>
+				</div>
+				<div class="teddy-footer-col">
+					<h3 class="teddy-footer-title">🚚 CHÍNH SÁCH MUA HÀNG</h3>
+					<p>✔️ Giao hàng hoả tốc nhanh chóng</p>
+					<p>✔️ Tặng kèm thiệp xinh xắn miễn phí</p>
+					<p>✔️ Đổi trả trong 7 ngày nếu lỗi NSX</p>
+				</div>
+			</div>
+			<div class="teddy-footer-bottom">
+				<p>Bản quyền © 2026 - Teddy Shop. All rights reserved.</p>
 			</div>
 		</footer>
 
