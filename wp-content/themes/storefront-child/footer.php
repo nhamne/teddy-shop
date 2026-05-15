@@ -15,7 +15,7 @@
 <?php do_action('storefront_before_footer'); ?>
 
 
-	<div>
+
 
 		<?php
 		if (function_exists('storefront_footer_widgets')) {

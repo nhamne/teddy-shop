@@ -1049,42 +1049,13 @@ body.single-post main#main {
   transform: translateY(-2px);
 }
 
-/* Ẩn Default Sorting khỏi CSS trước đó */
-.woocommerce-products-header {
-  margin-bottom: 30px;
-  background: #ffffff; /* Nền trắng trơn, thanh lịch */
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03); /* Bóng xám rất nhẹ, tự nhiên */
-  border: 1px solid #eef2f5; /* Viền xám siêu nhạt */
-  /* Đã gỡ bỏ border-left (cái gạch dọc ở đầu) */
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Watermark hình gấu cực mờ ở góc */
-.woocommerce-products-header::after {
-  content: "🧸";
-  position: absolute;
-  right: 0px;
-  bottom: -30px;
-  font-size: 100px;
-  opacity: 0.03; /* Siêu mờ, tinh tế không bị loè loẹt */
-  transform: rotate(-15deg);
-  pointer-events: none;
-}
-
-.woocommerce-products-header .woocommerce-products-header__title {
-  margin: 0 !important;
-  color: #ff69b4; /* Trả về màu hồng nhạt nguyên bản */
-  font-size: 28px;
-  font-weight: bold; /* In đậm vừa phải */
-  text-align: left;
-  position: relative;
-  z-index: 1;
+/* ========================================================
+   ẨN TIÊU ĐỀ TRANG (entry-header / woocommerce-products-header)
+   Ẩn hộp trắng tiêu đề ở tất cả trang: danh mục, tin tức, liên hệ, giỏ hàng...
+======================================================== */
+.woocommerce-products-header,
+.entry-header {
+  display: none !important;
 }
 
 /* Giữ nguyên layout 3 cột mặc định của Storefront cho lưới sản phẩm */
@@ -1708,11 +1679,27 @@ body.single-post main#main {
 ======================================= */
 
 /* 1. Layout tổng thể (Chia cột trái - phải trên Desktop) */
+
+/* Tiêu đề Giỏ hàng (entry-header) phải chiếm toàn bộ chiều rộng, tách biệt với layout 2 cột bên dưới */
+.woocommerce-cart .entry-header,
+.woocommerce-checkout .entry-header {
+  width: 100% !important;
+  flex: 0 0 100% !important;
+  margin-bottom: 30px !important;
+}
+
 @media (min-width: 768px) {
   .woocommerce-cart .woocommerce {
     display: flex !important;
     flex-wrap: wrap !important;
     justify-content: space-between !important;
+    align-items: flex-start !important;
+  }
+  /* entry-header phải full-width và nằm trước 2 cột */
+  .woocommerce-cart .woocommerce .entry-header {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    order: -1 !important; /* Đặt lên đầu */
   }
   .woocommerce-cart .woocommerce-cart-form {
     width: 65% !important;

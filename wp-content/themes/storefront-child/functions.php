@@ -4,8 +4,9 @@ function storefront_child_enqueue_styles()
 {
     // Gọi CSS của theme gốc
     wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
-    // Gọi CSS của child theme
-    wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'));
+    // Gọi CSS của child theme với filemtime để tránh cache
+    $version = filemtime(get_stylesheet_directory() . '/style.css');
+    wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'), $version);
 }
 
 /* ========================================================
@@ -778,4 +779,24 @@ function teddy_add_quantity_plus_minus() {
     </script>
     <?php
 }
+
+/* ========================================================
+   SHORTCODE TẠO TIÊU ĐỀ TRANG DÀNH CHO ELEMENTOR
+   Dùng shortcode: [teddy_page_header title="Tin tức"]
+======================================================== */
+add_shortcode('teddy_page_header', 'teddy_page_header_shortcode');
+function teddy_page_header_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'title' => get_the_title(),
+    ), $atts, 'teddy_page_header');
+
+    ob_start();
+    ?>
+    <header class="entry-header teddy-elementor-header">
+        <h1 class="entry-title"><?php echo esc_html($atts['title']); ?></h1>
+    </header>
+    <?php
+    return ob_get_clean();
+}
+
 ?>
